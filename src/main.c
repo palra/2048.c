@@ -14,7 +14,12 @@ int main()
     j.grille[1*TAILLE_GRILLE+1] = 4;
     
     printf("%d\n", getVal(&j, 0, 3));
+    
+    setVal(&j, 0, 3, 8);
+    
+    printf("%d\n", getVal(&j, 0, 3));
     printf("%d\n", getVal(&j, 1, 1));
+    
     
     libereMemoire(&j);
     
