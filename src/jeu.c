@@ -35,3 +35,12 @@ void libereMemoire(jeu *p)
     free(p->grille);
     p->grille = NULL;
 }
+
+/*!
+ * Fonction retournant 1 si la case (i,j) existe, 0 sinon.
+ *
+ */
+int indiceValide (jeu *p, int i, int j)
+{
+    return (i < p->n) && (j < p->n) && (i >= 0) && (j >= 0);
+}
