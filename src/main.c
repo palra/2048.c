@@ -10,11 +10,11 @@ int main()
     
     initialiseJeu(&j, TAILLE_GRILLE, SCORE_MAX);
     
-    printf("%d\n", indiceValide(&j, 5, 2));
-    printf("%d\n", indiceValide(&j, 0, 4));
-    printf("%d\n", indiceValide(&j, 1, 2));
-    printf("%d\n", indiceValide(&j, -1, 3));
-    printf("%d\n", indiceValide(&j, 3, -2));
+    j.grille[0*TAILLE_GRILLE+3] = 2;
+    j.grille[1*TAILLE_GRILLE+1] = 4;
+    
+    printf("%d\n", getVal(&j, 0, 3));
+    printf("%d\n", getVal(&j, 1, 1));
     
     libereMemoire(&j);
     

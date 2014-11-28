@@ -44,3 +44,23 @@ int indiceValide (jeu *p, int i, int j)
 {
     return (i < p->n) && (j < p->n) && (i >= 0) && (j >= 0);
 }
+
+/*!
+ * Fonction retournant la valeur de la case (ligne,colonne) de la partie p,
+ * ou -1 si la case n’existe pas.
+ *
+ * \param p : pointeur sur la partie en cours
+ * \param ligne : entier correspondant au numéro de ligne
+ * \param colonne : entier correspondant au numéro de colonne
+ */
+int getVal(jeu *p, int ligne, int colonne)
+{
+    if(indiceValide(p, ligne, colonne))
+    {
+        return *(p->grille + (p->n * ligne + colonne));
+    }
+    else
+    {
+        return -1;
+    }
+}
