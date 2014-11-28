@@ -2,14 +2,18 @@ CC=gcc
 CFLAGS=-Wall
 LDFLAGS=
 EXEC=2048
+SRC= $(wildcard *.c)
+OBJ= $(SRC:.c=.o)
 
 run: all
 	./$(EXEC)
 
 all: $(EXEC)
 
-2048: main.o jeu.o
+2048: $(SRC)
 	$(CC) -o $@ $^ $(LDFLAGS)
+	
+main.o: jeu.h
 
 %.o: %.c
 	$(CC) -o $@ -c $< $(CFLAGS)

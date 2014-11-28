@@ -20,7 +20,18 @@ void initialiseJeu (jeu *p, int n, int valMax)
     
     if(p->grille == NULL)
     {
-        fprintf(stderr, "Impossible d'allouer la mémoire\n");
+        fprintf(stderr, "Impossible d'allouer la memoire\n");
         exit(EXIT_FAILURE);
     }
+}
+
+/*!
+ * Libère la mémoire allouée pour la grille du jeu passé par adresse.
+ *
+ * \param p : pointeur sur une partie de 2048
+ */
+void libereMemoire(jeu *p)
+{
+    free(p->grille);
+    p->grille = NULL;
 }
