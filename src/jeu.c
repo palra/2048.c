@@ -1,5 +1,6 @@
 #include "jeu.h"
 #include <stdlib.h>
+#include <stdio.h>
 
 /*!
  * Alloue la grille de la variable jeu passée par adresse.
@@ -12,8 +13,14 @@
  */
 void initialiseJeu (jeu *p, int n, int valMax)
 {
-    jeu->n = n;
-    jeu->valMax = valMax;
-    jeu->nbCasesLibres = n*n;
-    jeu->
+    p->n = n;
+    p->valMax = valMax;
+    p->nbCasesLibres = n * n;
+    p->grille = malloc(sizeof(int)*n*n);
+    
+    if(p->grille == NULL)
+    {
+        fprintf(stderr, "Impossible d'allouer la mémoire\n");
+        exit(EXIT_FAILURE);
+    }
 }
