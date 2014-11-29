@@ -50,10 +50,32 @@ void jeu_index_asserts()
     libereMemoire(&p);
 }
 
+void jeu_get_set_asserts()
+{
+    jeu p;
+    
+    initialiseJeu(&p, 4, 2048);
+    
+    describe("Getters/Setters");
+        
+        setVal(&p, 0, 0, 2);
+        assertEql("(0,0) <- 2", getVal(&p, 0, 0), 2);
+        
+        setVal(&p, 0, 0, 4);
+        assertEql("(0,0) <- 4", getVal(&p, 0, 0), 4);
+        
+        assertEql("(5,3) n'existe pas : -1", getVal(&p, 5, 3), -1);
+        
+    endDescribe();
+    
+    libereMemoire(&p);
+}
+
 void test_jeu()
 {
     describe("Jeu (structure)");
         jeu_alloc_asserts();
         jeu_index_asserts();
+        jeu_get_set_asserts();
     endDescribe();
 }
