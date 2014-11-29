@@ -1,5 +1,5 @@
-#include "jeu.h"
-#include "color.h"
+#include "src/jeu.h"
+#include "src/color.h"
 #include <stdio.h>
 
 #define TAILLE_GRILLE 4
