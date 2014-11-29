@@ -36,7 +36,7 @@ void jeu_index_asserts()
     
     describe("Indices");
         
-        assertTrue("(0,3) est dans la grille de dimension 4", indiceValide(&p, 0, 3));
+        assertTrue("(3,3) est dans la grille de dimension 4", indiceValide(&p, 3, 3));
         assertTrue("(0,0) est dans la grille de dimension 4", indiceValide(&p, 0, 0));
         assertFalse("(5,2) n'est pas dans la grille de dimension 4", indiceValide(&p, 5, 2));
         assertFalse("(1,8) n'est pas dans la grille de dimension 4", indiceValide(&p, 1, 8));
@@ -71,11 +71,33 @@ void jeu_get_set_asserts()
     libereMemoire(&p);
 }
 
+void jeu_case_vide_asserts()
+{
+    jeu p;
+    
+    initialiseJeu(&p, 4, 2048);
+    
+    describe("Case vide");
+        
+        assertTrue("(0,0) est vide", caseVide(&p, 0, 0));
+        
+        setVal(&p, 0, 3, 4);
+        assertFalse("(0,3) n'est pas vide", caseVide(&p, 0, 3));
+        assertFalse("(42,1337) n'existe pas", caseVide(&p, 42, 1337));
+        
+    endDescribe();
+    
+    libereMemoire(&p);
+}
+
 void test_jeu()
 {
     describe("Jeu (structure)");
         jeu_alloc_asserts();
         jeu_index_asserts();
         jeu_get_set_asserts();
+    endDescribe();
+    describe("Jeu (utilitaires)");
+        jeu_case_vide_asserts();
     endDescribe();
 }
