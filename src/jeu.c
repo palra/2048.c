@@ -42,6 +42,7 @@ void libereMemoire(jeu *p)
  */
 int indiceValide (jeu *p, int i, int j)
 {
+    // Si i < taille max ET j < taille max ET i >= 0 ET j >= 0
     return (i < p->n) && (j < p->n) && (i >= 0) && (j >= 0);
 }
 
@@ -57,6 +58,14 @@ int getVal(jeu *p, int ligne, int colonne)
 {
     if(indiceValide(p, ligne, colonne))
     {
+        // Retourne la valeur de la case (ligne, colonne)
+        
+        /**
+         * Explications :
+         * Une ligne a une longueur `p->n`, donc accéder à la ligne i c'est
+         * accéder aux cases mémoires de décalage i*p->n par rapport au 
+         * début du tableau.
+         */
         return *(p->grille + (p->n * ligne + colonne));
     }
     else

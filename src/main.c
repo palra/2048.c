@@ -20,7 +20,6 @@ int main()
     printf("%d\n", getVal(&j, 0, 3));
     printf("%d\n", getVal(&j, 1, 1));
     
-    
     libereMemoire(&j);
     
     return 0;

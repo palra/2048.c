@@ -5,23 +5,23 @@ EXEC=2048
 SRC= $(wildcard *.c)
 OBJ= $(SRC:.c=.o)
 
-run: all
-	./$(EXEC)
+run: mrproper all
+	@./$(EXEC)
 
 all: $(EXEC)
 
 2048: $(SRC)
-	$(CC) -o $@ $^ $(LDFLAGS)
+	@$(CC) -o $@ $^ $(LDFLAGS)
 	
 main.o: jeu.h
 
 %.o: %.c
-	$(CC) -o $@ -c $< $(CFLAGS)
+	@$(CC) -o $@ -c $< $(CFLAGS)
 
 .PHONY: clean mrproper
 
 clean:
-	rm -rf *.o
+	@rm -rf *.o
 
 mrproper: clean
-	rm -rf $(EXEC)
+	@rm -rf $(EXEC)
