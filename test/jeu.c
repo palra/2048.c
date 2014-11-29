@@ -27,9 +27,32 @@ void jeu_alloc_asserts()
     endDescribe();
 }
 
+void jeu_index_asserts()
+{
+    jeu p;
+    
+    initialiseJeu(&p, 4, 2048);
+    
+    describe("Indices");
+        
+        assertTrue("(0,3) est dans la grille de dimension 4", indiceValide(&p, 0, 3));
+        assertTrue("(0,0) est dans la grille de dimension 4", indiceValide(&p, 0, 0));
+        assertFalse("(5,2) n'est pas dans la grille de dimension 4", indiceValide(&p, 5, 2));
+        assertFalse("(1,8) n'est pas dans la grille de dimension 4", indiceValide(&p, 1, 8));
+        assertFalse("(42,9) n'est pas dans la grille de dimension 4", indiceValide(&p, 42, 9));
+        assertFalse("(-3,8) n'est pas dans la grille de dimension 4", indiceValide(&p, -3, 8));
+        assertFalse("(42,-9) n'est pas dans la grille de dimension 4", indiceValide(&p, 42, -9));
+        assertFalse("(-3,-9) n'est pas dans la grille de dimension 4", indiceValide(&p, -3, -9));
+        
+    endDescribe();
+    
+    libereMemoire(&p);
+}
+
 void test_jeu()
 {
     describe("Jeu (structure)");
         jeu_alloc_asserts();
+        jeu_index_asserts();
     endDescribe();
 }
