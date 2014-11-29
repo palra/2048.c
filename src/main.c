@@ -1,4 +1,5 @@
 #include "jeu.h"
+#include "color.h"
 #include <stdio.h>
 
 #define TAILLE_GRILLE 4
@@ -13,7 +14,7 @@ int main()
     j.grille[0*TAILLE_GRILLE+3] = 2;
     j.grille[1*TAILLE_GRILLE+1] = 4;
     
-    printf("%d\n", getVal(&j, 0, 3));
+    color_printf(WHITE, BLUE, "%d\n", getVal(&j, 0, 3));
     
     setVal(&j, 0, 3, 8);
     
