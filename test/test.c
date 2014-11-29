@@ -32,7 +32,62 @@ void describe(char *category)
 }
 
 /**
- * Asserts the test value an check if true.
+ * Asserts the test value and check if equal to expect.
+ * 
+ * \param desc A string describing the test value
+ * \param test The value to test
+ * \param expect The comparative value
+ */
+void assertEql(char *desc, int test, int expect)
+{
+    _printOffset();
+    printf("%s : ", desc);
+    
+    _nbAsserts++;
+    
+    if(test == expect)
+        color_printf(GREEN, BLACK, PASSED_STR);
+    else
+    {
+        color_printf(RED, BLACK, "%s\n", FAILED_STR);
+        _printOffset();
+        color_printf(RED, BLACK, "Expected %d to be %d.", test, expect);
+        _nbFailedAsserts++;
+    }
+    
+    printf("\n");
+}
+
+/**
+ * Asserts the test value and check if equal to expect.
+ * 
+ * \param desc A string describing the test value
+ * \param test The value to test
+ * \param notExpect The comparative value
+ */
+void assertDiff(char *desc, int test, int notExpect)
+{
+    _printOffset();
+    printf("%s : ", desc);
+    
+    _nbAsserts++;
+    
+    if(test != notExpect)
+        color_printf(GREEN, BLACK, PASSED_STR);
+    else
+    {
+        color_printf(RED, BLACK, "%s\n", FAILED_STR);
+        _printOffset();
+        color_printf(RED, BLACK, "Expected %d to be %d.", test, notExpect);
+        _nbFailedAsserts++;
+    }
+    
+    printf("\n");
+}
+
+
+/**
+ * Asserts the test value and check if true.
  * 
  * \param desc A string describing the test value
  * \param test The value to test
@@ -58,12 +113,12 @@ void assertTrue(char *desc, int test)
 }
 
 /**
- * Asserts the test value an check if false.
+ * Asserts the test value and check if false.
  * 
  * \param desc A string describing the test value
  * \param test The value to test
  */
-void assertFlase(char *desc, int test)
+void assertFalse(char *desc, int test)
 {
     _printOffset();
     printf("%s : ", desc);
@@ -83,13 +138,27 @@ void assertFlase(char *desc, int test)
     printf("\n");
 }
 
+/**
+ * Closes the last set of assets.
+ */
 void endDescribe()
 {
     _offset--;
 }
 
+/**
+ * Displays a recapitulative of the tests
+ */
 void recap()
 {
     _printOffset();
-    color_printf((_nbFailedAsserts == 0) ? GREEN : RED, BLACK, "\n%d of %d assert(s) passed.\n", _nbAsserts - _nbFailedAsserts, _nbAsserts);
+    color_printf(
+        (_nbFailedAsserts == 0) ? GREEN : RED,
+        BLACK,
+        
+        "\n%d of %d assert(s) passed.\n%s.\n",
+        _nbAsserts - _nbFailedAsserts,
+        _nbAsserts,
+        (_nbFailedAsserts == 0) ? "Success": "Failure"
+    );
 }

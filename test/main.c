@@ -1,17 +1,10 @@
-#include <stdio.h>
 #include "test.h"
+#include "jeu.h"
 
 int main()
 {
-    
-    describe("Jeu");
-        describe("Grid");
-            assertTrue("setVal - is true", 1 == 1);
-            assertTrue("setVal - is true", 1 == 2);
-        endDescribe();
-    endDescribe();
+    test_jeu();
     
     recap();
-    
     return 0;
 }

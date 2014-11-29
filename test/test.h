@@ -3,10 +3,12 @@
 
 void describe(char *category);
 
-void assert(char *desc, int test, int expect);
+void assertEql(char *desc, int test, int expect);
+void assertDiff(char *desc, int test, int notExpect);
 void assertTrue(char *desc, int test);
 void assertFalse(char *desc, int test);
 
 void endDescribe();
+void recap();
 
 #endif

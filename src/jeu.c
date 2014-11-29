@@ -34,6 +34,7 @@ void libereMemoire(jeu *p)
 {
     free(p->grille);
     p->grille = NULL;
+    p->n = p->nbCasesLibres = p->valMax = -1;
 }
 
 /*!
