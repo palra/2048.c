@@ -90,3 +90,19 @@ void setVal(jeu * p, int ligne, int colonne, int val)
         *(p->grille + (p->n * ligne + colonne)) = val;
     }
 }
+/*!
+ * Fonction affichant la grille à l’écran.
+ *
+ * \param p : pointeur sur la partie que l’on souhaite afficher
+ */
+void affichage(jeu *p)
+{
+    int i = 0;
+    
+    printf("*****************************\n");
+    for(i = 0; i < p->n * p->n; i++)
+    {
+        printf("%s* %4d %s", (i % p->n == 0 && i != 0) ? "\n" : "", p->grille[i], ((i+1) % p->n == 0) ? "*" : "");
+    }
+    printf("\n*****************************\n");
+}

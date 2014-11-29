@@ -11,15 +11,18 @@ int main()
     
     initialiseJeu(&j, TAILLE_GRILLE, SCORE_MAX);
     
-    j.grille[0*TAILLE_GRILLE+3] = 2;
-    j.grille[1*TAILLE_GRILLE+1] = 4;
+    setVal(&j, 0, 2, 2);
+    setVal(&j, 0, 3, 4);
+    setVal(&j, 1, 2, 4);
+    setVal(&j, 1, 3, 8);
+    setVal(&j, 2, 1, 2);
+    setVal(&j, 2, 2, 16);
+    setVal(&j, 2, 3, 32);
+    setVal(&j, 3, 1, 2);
+    setVal(&j, 3, 2, 2);
+    setVal(&j, 3, 3, 16);
     
-    color_printf(WHITE, BLUE, "%d\n", getVal(&j, 0, 3));
-    
-    setVal(&j, 0, 3, 8);
-    
-    printf("%d\n", getVal(&j, 0, 3));
-    printf("%d\n", getVal(&j, 1, 1));
+    affichage(&j);
     
     libereMemoire(&j);
     

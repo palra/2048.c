@@ -36,7 +36,7 @@ void jeu_index_asserts()
     
     describe("Indices");
         
-        assertTrue("(0,3) est dans la grille de dimension 4", indiceValide(&p, 0, 3));
+        assertTrue("(3,3) est dans la grille de dimension 4", indiceValide(&p, 3, 3));
         assertTrue("(0,0) est dans la grille de dimension 4", indiceValide(&p, 0, 0));
         assertFalse("(5,2) n'est pas dans la grille de dimension 4", indiceValide(&p, 5, 2));
         assertFalse("(1,8) n'est pas dans la grille de dimension 4", indiceValide(&p, 1, 8));
