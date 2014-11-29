@@ -16,7 +16,7 @@ void initialiseJeu (jeu *p, int n, int valMax)
     p->n = n;
     p->valMax = valMax;
     p->nbCasesLibres = n * n;
-    p->grille = malloc(sizeof(int)*n*n);
+    p->grille = calloc(n*n, sizeof(int));
     
     if(p->grille == NULL)
     {
