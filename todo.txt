@@ -1,1 +1,0 @@
-La fonction initialiseJeu ne met pas la valeur 0 dans les cases non ?

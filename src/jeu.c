@@ -79,14 +79,27 @@ int getVal(jeu *p, int ligne, int colonne)
  * Fonction modifiant la valeur de la case (ligne,colonne) de la partie p, avec la valeur val
  *
  * \param p : pointeur sur la partie en cours
- * \param ligne : entier orrespondant au numéro de ligne
- * \param colonne : entier orrespondant au numéro de colonne
+ * \param ligne : entier correspondant au numéro de ligne
+ * \param colonne : entier correspondant au numéro de colonne
  * \param val : entier à mettre dans la case (i,j) (si elle existe)
  */
 void setVal(jeu * p, int ligne, int colonne, int val)
 {
     if(indiceValide(p, ligne, colonne))
     {
-        *(p->grille + (p->n * ligne + colonne)) = val;
+        p->grille[p->n * ligne + colonne] = val;
     }
+}
+
+/*! \fn caseVide
+ * 
+ * Retourne 1 si la case est vide, 0 sinon
+ 
+ * \param p : pointeur sur la partie en cours
+ * \param ligne : entier correspondant au numéro de ligne
+ * \param colonne : entier correspondant au numéro de colonne
+ */
+int caseVide(jeu * p, int ligne, int colonne)
+{
+    return (indiceValide(p, ligne, colonne)) ? p->grille[p->n * ligne + colonne] == 0 : 0;
 }

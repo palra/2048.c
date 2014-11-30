@@ -14,6 +14,7 @@ void initialiseJeu (jeu *p, int n, int valMax);
 int indiceValide (jeu *p, int i, int j);
 int getVal(jeu *p, int ligne, int colonne);
 void setVal(jeu * p, int ligne, int colonne, int val);
-void affichage(jeu *p);
+
+int caseVide(jeu *p, int ligne, int colonne);
 
 #endif
