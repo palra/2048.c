@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-/*!
+/*! \fn initialiseJeu
  * Alloue la grille de la variable jeu passée par adresse.
  * Initialise les cases de la grille avec des cases vides (valeurs nulles)
  * Initialise les champs n et valMax avec les valeurs passées en paramètre
@@ -25,7 +25,7 @@ void initialiseJeu (jeu *p, int n, int valMax)
     }
 }
 
-/*!
+/*! \fn libereMemoire
  * Libère la mémoire allouée pour la grille du jeu passé par adresse.
  *
  * \param p : pointeur sur une partie de 2048
@@ -37,7 +37,7 @@ void libereMemoire(jeu *p)
     p->n = p->nbCasesLibres = p->valMax = -1;
 }
 
-/*!
+/*! \fn indiceValide
  * Fonction retournant 1 si la case (i,j) existe, 0 sinon.
  *
  */
@@ -47,7 +47,7 @@ int indiceValide (jeu *p, int i, int j)
     return (i < p->n) && (j < p->n) && (i >= 0) && (j >= 0);
 }
 
-/*!
+/*! \fn getVal
  * Fonction retournant la valeur de la case (ligne,colonne) de la partie p,
  * ou -1 si la case n’existe pas.
  *
@@ -75,7 +75,7 @@ int getVal(jeu *p, int ligne, int colonne)
     }
 }
 
-/*!
+/*! \fn setVal
  * Fonction modifiant la valeur de la case (ligne,colonne) de la partie p, avec la valeur val
  *
  * \param p : pointeur sur la partie en cours
@@ -89,20 +89,4 @@ void setVal(jeu * p, int ligne, int colonne, int val)
     {
         *(p->grille + (p->n * ligne + colonne)) = val;
     }
-}
-/*!
- * Fonction affichant la grille à l’écran.
- *
- * \param p : pointeur sur la partie que l’on souhaite afficher
- */
-void affichage(jeu *p)
-{
-    int i = 0;
-    
-    printf("*****************************\n");
-    for(i = 0; i < p->n * p->n; i++)
-    {
-        printf("%s* %4d %s", (i % p->n == 0 && i != 0) ? "\n" : "", p->grille[i], ((i+1) % p->n == 0) ? "*" : "");
-    }
-    printf("\n*****************************\n");
 }

@@ -1,6 +1,6 @@
 CC=gcc
 CFLAGS=-Wall
-LDFLAGS=
+LDFLAGS=-lm
 EXEC=2048
 TEXEC=2048test
 SRC= $(wildcard src/*.c) main.c
