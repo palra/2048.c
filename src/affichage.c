@@ -1,6 +1,10 @@
 #include "affichage.h"
 
-#include <math.h>
+// Ne JAMAIS utiliser pow et un while en même temp, jamais.
+// Macro qui permet de déterminer rapidement le nombre de chiffres d'un entier positif
+#define NB_DIGITS(v) (v >= 1000000000) ? 10 : (v >= 100000000) ? 9 : (v >= 10000000) ? 8 : \
+                     (v >= 1000000) ? 7 : (v >= 100000) ? 6 : (v >= 10000) ? 5 : \
+                     (v >= 1000) ? 4 : (v >= 100) ? 3 : (v >= 10) ? 2 : 1
 
 /*! \fn choisirCouleur
  *    
@@ -11,11 +15,19 @@
  *  \param nbCouleurs : nombre de couleurs dans listeCouleurs
  *    
 */
-COULEUR_TERMINAL choisirCouleur(int nombre, COULEUR_TERMINAL listeCouleurs[], int nbCouleurs)
+COULEUR_TERMINAL choisirCouleur(int nombre, COULEUR_TERMINAL *listeCouleurs, int nbCouleurs)
 {
-    // Trouver la puissance de 2 qui correspondant au nombre
+    /**
+     * On cheche à résoudre nombre = 2^x + 2
+     * Pourquoi 2^x ? Parce que le jeu fonctionne avec des puissances de 2.
+     * Pourquoi + 2 ? Parce que si on l'enlèverai, on renverrai la couleur n°2 
+     * pour le nombre 2, or ce nombre est censé faire renvoyer la couleur n°0.
+     */
+     
+    // Trouver la puissance de 2 qui correspond au nombre
+    nombre = nombre >> 2;
     int puissance = 0;
-    while (pow(2, puissance) != nombre)
+    while (nombre >> puissance)
     {
         puissance++;
     }
@@ -41,7 +53,7 @@ COULEUR_TERMINAL choisirCouleur(int nombre, COULEUR_TERMINAL listeCouleurs[], in
  *  \param nbCouleurs : nombre de couleurs dans listeCouleurs
  *    
 */
-void dessinerLigne(int largeur, jeu *p, int numLigne, COULEUR_TERMINAL listeCouleurs[], int nbCouleurs)
+void dessinerLigne(int largeur, jeu *p, int numLigne, COULEUR_TERMINAL *listeCouleurs, int nbCouleurs)
 {
     int i, j;
     COULEUR_TERMINAL couleurCase;
@@ -79,7 +91,7 @@ void affichageCouleur(jeu *p)
     int nombre; // Nom que contient la case
     int nbChiffres; // Nombre de chiffres dans nombre
 
-    COULEUR_TERMINAL listeCouleurs[6] = {RED, GREEN, YELLOW, BLUE, MAGENTA, CYAN}; // Liste des couleurs utilisées
+    COULEUR_TERMINAL listeCouleurs[] = {CYAN, GREEN, BLUE, MAGENTA, YELLOW, RED}; // Liste des couleurs utilisées
     int nbCouleurs = 6; // Nombre de couleurs utilisées
     COULEUR_TERMINAL couleurCase; // Couleur utilisée pour la case
 
@@ -95,7 +107,7 @@ void affichageCouleur(jeu *p)
     for (i = 0; i < p->n; ++i)
     {
 
-/* ****************************** */
+    /******************************* */
     // Premieres lignes de la case
 
         for (j = 0; j < hauteurCase / 2; ++j)
@@ -103,7 +115,7 @@ void affichageCouleur(jeu *p)
             dessinerLigne(largeurCase, p, i, listeCouleurs, nbCouleurs);
         }
 
-/* ****************************** */
+        /******************************* */
         // Ligne qui contient le numero
 
         for (j = 0; j < p->n; ++j)
@@ -115,41 +127,24 @@ void affichageCouleur(jeu *p)
                 couleurCase = choisirCouleur(nombre, listeCouleurs, nbCouleurs);
 
                 // Trouver le nombre de chiffres dans nombre
-                nbChiffres = 0;
-                while (nombre > pow(10, nbChiffres))
-                {
-                    nbChiffres++;
-                }
+                nbChiffres = NB_DIGITS(nombre);
 
                 /*
-                    Si le nombre de chiffres est impaire, on pourra le centrer
+                    `+ !(nbChiffres % 2 == 1)` : explications
+                    
+                    Si le nombre de chiffres est impair, on pourra le centrer
                     il y aura donc autant d'espaces à sa droite qu'à sa gauche.
-                */
-                if (nbChiffres%2 == 1)
-                {
-                    for (k = 0; k < largeurCase / 2 - nbChiffres / 2; k++)
-                        color_printf(WHITE, couleurCase, " ");
-
-                    color_printf(WHITE, couleurCase, "%d", nombre);
-
-                    for (k = 0; k < largeurCase / 2 - nbChiffres / 2; k++)
-                        color_printf(WHITE, couleurCase, " ");
-                }
-
-                /*
-                    Si le nombre de chiffres est paire, on ne pourra pas le centrer
+                    
+                    Si le nombre de chiffres est pair, on ne pourra pas le centrer
                     il y aura donc un espace de plus à sa droite qu'à sa gauche
                 */
-                else
-                {
-                    for (k = 0; k < largeurCase / 2 - nbChiffres / 2; k++)
-                        color_printf(WHITE, couleurCase, " ");
+                for (k = 0; k < largeurCase / 2 - nbChiffres / 2; k++)
+                    color_printf(WHITE, couleurCase, " ");
 
-                    color_printf(WHITE, couleurCase, "%d", nombre);
+                color_printf(WHITE, couleurCase, "%d", nombre);
 
-                    for (k = 0; k < largeurCase / 2 - nbChiffres / 2 + 1; k++)
-                        color_printf(WHITE, couleurCase, " ");
-                }
+                for (k = 0; k < largeurCase / 2 - nbChiffres / 2 + !(nbChiffres % 2 == 1); k++)
+                    color_printf(WHITE, couleurCase, " ");
             }
 
             else
@@ -166,7 +161,7 @@ void affichageCouleur(jeu *p)
 
         printf("\n");
 
-/* ****************************** */
+        /* ****************************** */
         // Dernieres lignes de la case
 
         for (j = 0; j < hauteurCase / 2; ++j)
