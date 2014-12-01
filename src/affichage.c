@@ -1,10 +1,19 @@
 #include "affichage.h"
+#include <math.h>
 
-// Ne JAMAIS utiliser pow et un while en même temp, jamais.
-// Macro qui permet de déterminer rapidement le nombre de chiffres d'un entier positif
-#define NB_DIGITS(v) (v >= 1000000000) ? 10 : (v >= 100000000) ? 9 : (v >= 10000000) ? 8 : \
-                     (v >= 1000000) ? 7 : (v >= 100000) ? 6 : (v >= 10000) ? 5 : \
-                     (v >= 1000) ? 4 : (v >= 100) ? 3 : (v >= 10) ? 2 : 1
+/*! nbDigits
+ *
+ *  Retourne le nombre de digits d'un entier
+ *  
+ *  \param x : entier
+ *  
+*/
+int nbDigits(int x)
+{
+    // Tant qu'à faire ... Comme ça, ça marchera avec n'importe quel entier
+    
+    return (x != 0) ? (int) (log10 (abs (x))) + 1 : 1;
+}
 
 /*! \fn choisirCouleur
  *    
@@ -107,8 +116,8 @@ void affichageCouleur(jeu *p)
     for (i = 0; i < p->n; ++i)
     {
 
-    /******************************* */
-    // Premieres lignes de la case
+        /******************************* */
+        // Premieres lignes de la case
 
         for (j = 0; j < hauteurCase / 2; ++j)
         {
@@ -127,7 +136,7 @@ void affichageCouleur(jeu *p)
                 couleurCase = choisirCouleur(nombre, listeCouleurs, nbCouleurs);
 
                 // Trouver le nombre de chiffres dans nombre
-                nbChiffres = NB_DIGITS(nombre);
+                nbChiffres = nbDigits(nombre);
 
                 /*
                     `+ !(nbChiffres % 2 == 1)` : explications

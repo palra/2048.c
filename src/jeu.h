@@ -16,5 +16,10 @@ int getVal(jeu *p, int ligne, int colonne);
 void setVal(jeu * p, int ligne, int colonne, int val);
 
 int caseVide(jeu *p, int ligne, int colonne);
+void ajouteValAlea(jeu *p);
+
+int gagne(jeu *p);
+int perdu(jeu *p);
+int finPartie(jeu *p);
 
 #endif

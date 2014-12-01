@@ -67,7 +67,7 @@ int getVal(jeu *p, int ligne, int colonne)
          * accéder aux cases mémoires de décalage i*p->n par rapport au 
          * début du tableau.
          */
-        return *(p->grille + (p->n * ligne + colonne));
+        return p->grille[p->n * ligne + colonne];
     }
     else
     {
@@ -88,6 +88,25 @@ void setVal(jeu * p, int ligne, int colonne, int val)
     if(indiceValide(p, ligne, colonne))
     {
         p->grille[p->n * ligne + colonne] = val;
+        
+        // Mise à jour du nombre de cases vides
+        
+        /**
+         * Pourquoi ne pas simplement décrémente/incrémenter le compteur ?
+         * - Si on faisait ainsi, et que l'on exécute ce code :
+         *  setVal(&p, 0, 0, 0);
+         *  setVal(&p, 0, 0, 0);
+         *  setVal(&p, 0, 0, 0);
+         *  ...
+         * Le compteur serait incrémenté 3 fois de trop.
+         */
+         
+        p->nbCasesLibres = 0;
+        int i, j;
+        for(i = 0; i < p->n; i++)
+            for(j = 0; j < p->n; j++)  
+                if(getVal(p, i, j) == 0)
+                    p->nbCasesLibres++;
     }
 }
 
@@ -101,5 +120,82 @@ void setVal(jeu * p, int ligne, int colonne, int val)
  */
 int caseVide(jeu * p, int ligne, int colonne)
 {
-    return (indiceValide(p, ligne, colonne)) ? p->grille[p->n * ligne + colonne] == 0 : 0;
+    return (indiceValide(p, ligne, colonne)) ? getVal(p, ligne, colonne) == 0 : 0;
+}
+
+/*! \fn ajouteValAlea
+ *  
+ *  Ajoute la valeur 2 ou 4 dans une case vide aléatoire
+ *  
+ *  \param p : pointeur sur la partie en cours
+ *  
+*/
+void ajouteValAlea(jeu *p)
+{
+    int i = 0;
+    int col, row, val;
+    
+    if(p->nbCasesLibres > 0)
+    {
+        do
+        {
+            col = rand() % p->n;
+            row = rand() % p->n;
+            val = rand() % 2;
+            
+            i++;
+        } while (!indiceValide(p, col, row));
+    
+        setVal(p, col, row, val * 2 + 2);
+    }
+}
+
+/*!
+ * \fn gagne
+ * Retourne 1 si la partie est gagnée, 0 sinon.
+ *
+ * \param p : pointeur sur la partie en cours
+ */
+int gagne(jeu * p)
+{
+    int i = 0;
+    
+    for(i = (p->n * p->n) - 1; i >= 0; i--)
+        if(p->grille[i] >= p->valMax)
+            return 1;
+    
+    return 0;
+}
+
+/*!
+ * \fn perdu
+ * Retourne 1 si la partie est perdue, 0 sinon.
+ *
+ * \param p : pointeur sur la partie en cours
+ */
+int perdu(jeu *p)
+{
+    int i, j;
+    if(p->nbCasesLibres <= 0)
+    {
+        for(i = p->n - 1; i >= 0; i--)
+        {
+            for(j = p->n - 1; j >= 0; j--)
+            {
+                if(
+                    (getVal(p, i, j) == getVal(p, i-1, j))
+                 || (getVal(p, i, j) == getVal(p, i+1, j))
+                 || (getVal(p, i, j) == getVal(p, i, j+1))
+                 || (getVal(p, i, j) == getVal(p, i, j-1))
+                )
+                    return 0;
+            }
+        }
+        
+        return 1;
+    } else {
+        return 0;
+    }
+
+    
 }
