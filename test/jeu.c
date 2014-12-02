@@ -110,7 +110,7 @@ void jeu_val_alea_asserts()
         ajouteValAlea(&p);
         ajouteValAlea(&p);
         ajouteValAlea(&p);
-        assertEql("Une fois la grille remplie ...", p.nbCasesLibres, 0);
+        assertEql("Une fois la grille remplie", p.nbCasesLibres, 0);
         assertTrue(".. ajouter une valeur en trop ne doit pas bloquer le programme", 1);
         
         
@@ -127,10 +127,10 @@ void jeu_gagne_asserts()
     
     describe("Gagne");
         
-        assertFalse("Au départ, le jeu n'est pas gagne (trop facile sinon)", gagne(&p));
+        assertFalse("Au depart, le jeu n'est pas gagne (trop facile sinon)", gagne(&p));
         
         setVal(&p, 0, 0, 16);
-        assertFalse("Il ne l'est toujours pas si il a une quelquonque valeur dans la grille ...", gagne(&p));
+        assertFalse("Il ne l'est toujours pas si il a une quelquonque valeur dans la grille", gagne(&p));
         
         
         setVal(&p, 0, 1, 32);
@@ -161,18 +161,21 @@ void jeu_perdu_asserts()
         assertFalse("Au depart, le jeu n'est pas perdu (trop dur sinon)", perdu(&p));
         
         setVal(&p, 0, 0, 16);
-        assertFalse("Il ne l'est toujours pas si il a une quelquonque valeur dans la grille ...", perdu(&p));
+        assertFalse("Il ne l'est toujours pas si il a une quelquonque valeur dans la grille", perdu(&p));
         
         setVal(&p, 0, 1, 32);
         setVal(&p, 1, 0, 64);
-        setVal(&p, 1, 1, 2048); // Oui cette valeur ne sera jamais dans un jeu
+        setVal(&p, 1, 1, 128);
         assertTrue("... mais l'est si la grille est remplie et que les valeurs adjacentes ne sont pas egales", perdu(&p));
         
-        setVal(&p, 0, 0, 0);
+        setVal(&p, 1, 1, 0);
         assertFalse("... mais le n'est plus si il reste une case (ou plus) vide", perdu(&p));
         
+        setVal(&p, 1, 1, 2048);
+        assertFalse("... ou si le jeu est gagne", perdu(&p));
+        
         setVal(&p, 0, 0, 32);
-        assertFalse("... ou si deux valeurs adjacentes sont egales, hoizontalement ...", perdu(&p));
+        assertFalse("... ou si deux valeurs adjacentes sont egales, hoizontalement", perdu(&p));
         
         setVal(&p, 0, 0, 64);
         assertFalse("... ou verticalement", perdu(&p));
@@ -182,19 +185,47 @@ void jeu_perdu_asserts()
     libereMemoire(&p);
 }
 
+void jeu_fin_partie_asserts()
+{
+    jeu p;
+    
+    initialiseJeu(&p, 2, 2048);
+    
+    describe("Fin de partie");
+    
+        assertFalse("Au depart, le jeu n'est pas fini (impossible de jouer sinon)", finPartie(&p));
+        
+        setVal(&p, 0, 0, 16);
+        assertFalse("Il ne l'est toujours pas si il a une quelquonque valeur dans la grille", finPartie(&p));
+        
+        setVal(&p, 0, 1, 32);
+        setVal(&p, 1, 0, 64);
+        setVal(&p, 1, 1, 2048);
+        assertTrue("... mais l'est si le jeu est gagne", finPartie(&p));
+        
+        setVal(&p, 1, 1, 128);
+        assertTrue("... ou perdu", finPartie(&p));
+    
+    endDescribe();
+    
+    libereMemoire(&p);
+}
 
 
 void test_jeu()
 {
-    describe("Jeu (structure)");
-        jeu_alloc_asserts();
-        jeu_index_asserts();
-        jeu_get_set_asserts();
-    endDescribe();
-    describe("Jeu (utilitaires)");
-        jeu_case_vide_asserts();
-        jeu_val_alea_asserts();
-        jeu_gagne_asserts();
-        jeu_perdu_asserts();
+    describe("Jeu");
+        describe("Structure");
+            jeu_alloc_asserts();
+            jeu_index_asserts();
+            jeu_get_set_asserts();
+        endDescribe();
+        describe("Algorithmes");
+            jeu_case_vide_asserts();
+            jeu_val_alea_asserts();
+            jeu_gagne_asserts();
+            jeu_perdu_asserts();
+            jeu_fin_partie_asserts();
+        endDescribe();
     endDescribe();
 }

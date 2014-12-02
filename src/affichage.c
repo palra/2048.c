@@ -1,19 +1,5 @@
 #include "affichage.h"
-#include <math.h>
-
-/*! nbDigits
- *
- *  Retourne le nombre de digits d'un entier
- *  
- *  \param x : entier
- *  
-*/
-int nbDigits(int x)
-{
-    // Tant qu'à faire ... Comme ça, ça marchera avec n'importe quel entier
-    
-    return (x != 0) ? (int) (log10 (abs (x))) + 1 : 1;
-}
+#include "util.h"
 
 /*! \fn choisirCouleur
  *    

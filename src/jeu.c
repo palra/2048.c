@@ -176,7 +176,7 @@ int gagne(jeu * p)
 int perdu(jeu *p)
 {
     int i, j;
-    if(p->nbCasesLibres <= 0)
+    if(p->nbCasesLibres <= 0 && !gagne(p))
     {
         for(i = p->n - 1; i >= 0; i--)
         {
@@ -196,6 +196,15 @@ int perdu(jeu *p)
     } else {
         return 0;
     }
+}
 
-    
+/**
+ * \fn finParie
+ * Retourne 1 si la partie est finie (gagnée ou perdue), 0 sinon.
+ * 
+ * \param p : pointeur sur la partie en cours
+ */
+int finPartie(jeu *p)
+{
+    return gagne(p) || perdu(p);
 }
