@@ -165,5 +165,5 @@ void affichageCouleur(jeu *p)
         }
     }
 
-    printf("\n\n");
+    printf("\n");
 }

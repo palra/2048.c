@@ -144,7 +144,7 @@ void ajouteValAlea(jeu *p)
             val = rand() % 2;
             
             i++;
-        } while (!indiceValide(p, col, row));
+        } while (!indiceValide(p, col, row) && getVal(p, row, col) == 0);
     
         setVal(p, col, row, val * 2 + 2);
     }
