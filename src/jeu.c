@@ -87,26 +87,12 @@ void setVal(jeu * p, int ligne, int colonne, int val)
 {
     if(indiceValide(p, ligne, colonne))
     {
+        if(getVal(p, ligne, colonne) == 0 && val != 0)
+            p->nbCasesLibres--;
+        else if(getVal(p, ligne, colonne) != 0 && val == 0)
+            p->nbCasesLibres++;
+        
         p->grille[p->n * ligne + colonne] = val;
-        
-        // Mise à jour du nombre de cases vides
-        
-        /**
-         * Pourquoi ne pas simplement décrémente/incrémenter le compteur ?
-         * - Si on faisait ainsi, et que l'on exécute ce code :
-         *  setVal(&p, 0, 0, 0);
-         *  setVal(&p, 0, 0, 0);
-         *  setVal(&p, 0, 0, 0);
-         *  ...
-         * Le compteur serait incrémenté 3 fois de trop.
-         */
-         
-        p->nbCasesLibres = 0;
-        int i, j;
-        for(i = 0; i < p->n; i++)
-            for(j = 0; j < p->n; j++)  
-                if(getVal(p, i, j) == 0)
-                    p->nbCasesLibres++;
     }
 }
 
@@ -132,21 +118,28 @@ int caseVide(jeu * p, int ligne, int colonne)
 */
 void ajouteValAlea(jeu *p)
 {
-    int i = 0;
-    int col, row, val;
-    
     if(p->nbCasesLibres > 0)
     {
-        do
+        int i, j, count = 0;
+        int *tab = calloc(p->n*p->n, sizeof(int));
+        
+        for (i = 0; i < p->n; i++)
         {
-            col = rand() % p->n;
-            row = rand() % p->n;
-            val = rand() % 2;
-            
-            i++;
-        } while (!indiceValide(p, col, row) && getVal(p, row, col) == 0);
-    
-        setVal(p, col, row, val * 2 + 2);
+            for (j = 0; j < p->n; j++)
+            {
+                if (getVal(p, i, j) == 0)
+                {
+                    tab[count] = i * p->n + j;
+                    count++;
+                }
+            }
+        }
+        
+        p->grille[tab[rand() % count]] = 2*(rand() % 2 + 1);
+        p->nbCasesLibres--;
+        
+        free(tab);
+        tab = NULL;
     }
 }
 

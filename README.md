@@ -12,5 +12,5 @@ make run
 ## Tests
 
 ```
-make run-test
+make test
 ```
