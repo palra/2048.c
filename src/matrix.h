@@ -23,4 +23,5 @@ int coordInMatrix(matrix *m, int x, int y);
 pixel* getPixelMatrix(matrix *m, int x, int y);
 int pushPixelMatrix(matrix *m, int x, int y, COULEUR_TERMINAL fg, COULEUR_TERMINAL bg, char c);
 int pushTextMatrix(matrix *m, int x, int y, COULEUR_TERMINAL fg, COULEUR_TERMINAL bg, char* s);
+int pushRectMatrix(matrix *m, int x, int y, int w, int h, COULEUR_TERMINAL fg, COULEUR_TERMINAL bg, char c);
 void clearMatrix(matrix *m);

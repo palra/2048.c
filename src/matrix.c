@@ -30,6 +30,7 @@ void freeMatrix(matrix *m)
 {
     free(m->p);
     m->p = NULL;
+    m->w = m->h = 0;
 }
 
 /**
@@ -162,13 +163,44 @@ void clearMatrix(matrix *m)
     {
         for(j = 0; j < m->h; j++)
         {
-            pixel *p = getPixelMatrix(m, i, j);
-            if(p != NULL)
-            {
-                p->fg = 0;
-                p->bg = 0;
-                p->c = 0;
-            }
+            pushPixelMatrix(m, i, j, BLACK, BLACK, '\0');
         }
     }
+}
+
+
+/**
+ * Ajoute un texte dans la matrice
+ * 
+ * \param m : Pointeur vers la matrice à modifier
+ * \param x : Ligne de la 1ère case de la matrice où afficher le rectangle
+ * \param y : Colonne de la 1ère case de la matrice où afficher le rectangle
+ * \param w : Largeur du rectangle
+ * \param h : Hauteur du rectangle
+ * \param fg : Couleur du rectangle
+ * \param bg : Couleur de l'arrière plan du rectangle
+ * \param s : Chaîne à affichier
+ * 
+ * Retourne 1 si la modification a réussie, -1 si le rectangle a dépassé, 0 sinon.
+ */
+int pushRectMatrix(matrix *m, int x, int y, int w, int h, COULEUR_TERMINAL fg, COULEUR_TERMINAL bg, char c)
+{
+    if(coordInMatrix(m, x, y))
+    {
+        int i, j;
+        for(i = 0; i < h; i++)
+        {
+            for(j = 0; j < w; j++)
+            {
+                if(!pushPixelMatrix(m, x+j, y+i, fg, bg, c))
+                {
+                    return -1;
+                }
+            }
+        }
+
+        return 1;
+    }
+    
+    return 0;
 }
