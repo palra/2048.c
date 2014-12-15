@@ -10,7 +10,7 @@ OBJ= $(SRC:.c=.o)
 run: mrproper all
 	@./$(EXEC)
 
-run-test: mrproper $(TEXEC)
+test: mrproper $(TEXEC)
 	@./$(TEXEC)
 
 all: $(EXEC)
