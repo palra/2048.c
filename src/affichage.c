@@ -3,7 +3,7 @@
 #include "util.h"
 
 
-#ifdef CACAKOLFJOL
+#ifdef OLD_VERSION
 
 /*! \fn choisirCouleur
  *    
@@ -172,7 +172,7 @@ void affichageCouleur(jeu *p)
     printf("\n");
 }
 
-#endif
+#else
 
 static COULEUR_TERMINAL listeCouleurs[] = {CYAN, GREEN, BLUE, MAGENTA, YELLOW, RED};
 static const int nbCouleurs = 6;
@@ -261,3 +261,5 @@ void affichageMatrice(jeu *p, matrix *m)
 
     flushMatrix(m);
 }
+
+#endif

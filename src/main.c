@@ -37,6 +37,9 @@ int main()
     
     return 0;
 }
+
+#ifdef OLD_VERSION
+
 /*! testPartie1
  *  
  *  Petit programme de test pour montrer au prof que la partie 1 marche comme il faut.
@@ -204,3 +207,5 @@ void testPartie2()
     
     libereMemoire(&j);
 }
+
+#endif
