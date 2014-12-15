@@ -1,3 +1,5 @@
+// Je suis un commentaire (:
+
 #include "src/jeu.h"
 #include "src/color.h"
 #include "src/affichage.h"
