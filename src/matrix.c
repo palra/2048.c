@@ -30,6 +30,7 @@ void freeMatrix(matrix *m)
 {
     free(m->p);
     m->p = NULL;
+    m->w = m->h = 0;
 }
 
 /**
