@@ -43,9 +43,9 @@ void flushMatrix(matrix *m)
     CLEAR();
     
     int ligne, col;
-    for(col = 0; col < m->h - 1; col++)
+    for(col = 0; col < m->h; col++)
     {
-        for(ligne = 0; ligne < m->w - 1; ligne++)
+        for(ligne = 0; ligne < m->w; ligne++)
         {
             pixel *p = getPixelMatrix(m, ligne, col);
             if(p != NULL)
@@ -83,7 +83,7 @@ int coordInMatrix(matrix *m, int ligne, int colonne)
 pixel* getPixelMatrix(matrix *m, int ligne, int colonne)
 {
     if(coordInMatrix(m, ligne, colonne))
-        return &m->p[m->w * ligne + colonne];
+        return &m->p[m->w * colonne + ligne];
     else
         return NULL;
 }
@@ -157,9 +157,9 @@ int pushTextMatrix(matrix *m, int ligne, int colonne, COULEUR_TERMINAL fg, COULE
 void clearMatrix(matrix *m)
 {
     int i, j;
-    for(i = 0; i < m->w; i++)
+    for(i = 0; i < m->h; i++)
     {
-        for(j = 0; j < m->h; j++)
+        for(j = 0; j < m->w; j++)
         {
             pushPixelMatrix(m, i, j, BLACK, BLACK, '\0');
         }
