@@ -43,16 +43,16 @@ void flushMatrix(matrix *m)
     CLEAR();
     
     int ligne, col;
-    for(col = 0; col < m->h; col++)
+    for(col = 0; col < m->h - 1; col++)
     {
-        for(ligne = 0; ligne < m->w; ligne++)
+        for(ligne = 0; ligne < m->w - 1; ligne++)
         {
             pixel *p = getPixelMatrix(m, ligne, col);
             if(p != NULL)
             {
                 color_printf(p->fg, p->bg, "%c", (p->c < 32) ? ' ' : p->c);
             } else {
-                return;
+                exit(EXIT_FAILURE);
             }
             
         }
@@ -65,25 +65,25 @@ void flushMatrix(matrix *m)
  * 0 sinon.
  * 
  * \param m : Pointeur vers la matrice courante
- * \param x : Ligne de la case de la matrice à tester
- * \param y : Colonne de la case de la matrice à tester
+ * \param ligne : Ligne de la case de la matrice à tester
+ * \param colonne : Colonne de la case de la matrice à tester
  */
-int coordInMatrix(matrix *m, int x, int y)
+int coordInMatrix(matrix *m, int ligne, int colonne)
 {
-    return (x >= 0) && (x < m->w) && (y >= 0) && (y < m->h);
+    return (ligne >= 0) && (ligne < m->w) && (colonne >= 0) && (colonne < m->h);
 }
 
 /**
  * Retourne un pointeur vers le pixel demandé.
  * 
  * \param m : Pointeur vers la matrice courante
- * \param x : Ligne sur la matrice du pixel demandé
- * \param y : Colonne sur la matrice du pixel demandé
+ * \param ligne : Ligne sur la matrice du pixel demandé
+ * \param colonne : Colonne sur la matrice du pixel demandé
  */
-pixel* getPixelMatrix(matrix *m, int x, int y)
+pixel* getPixelMatrix(matrix *m, int ligne, int colonne)
 {
-    if(coordInMatrix(m, x, y))
-        return &m->p[m->h * x + y];
+    if(coordInMatrix(m, ligne, colonne))
+        return &m->p[m->w * ligne + colonne];
     else
         return NULL;
 }
@@ -92,25 +92,25 @@ pixel* getPixelMatrix(matrix *m, int x, int y)
  * Modifie la valeur d'un pixel de la matrice.
  * 
  * \param m : Pointeur vers la matrice à modifier
- * \param x : Ligne de la case de la matrice à modifier
- * \param y : Colonne de la case de la matrice à modifier
+ * \param ligne : Ligne de la case de la matrice à modifier
+ * \param colonne : Colonne de la case de la matrice à modifier
  * \param fg : Couleur du texte de la case
  * \param bg : Couleur de l'arrière plan de la case
  * \param c : Caractère affiché pour cette case
  * 
  * Retourne 1 si la modification a réussie, 0 sinon.
  */
-int pushPixelMatrix(matrix *m, int x, int y, COULEUR_TERMINAL fg, COULEUR_TERMINAL bg, char c)
+int pushPixelMatrix(matrix *m, int ligne, int colonne, COULEUR_TERMINAL fg, COULEUR_TERMINAL bg, char c)
 {
-    if(coordInMatrix(m, x, y))
+    pixel *p = getPixelMatrix(m, ligne, colonne);
+    if (p != NULL) 
     {
-        pixel *p = getPixelMatrix(m, x, y);
         p->fg = fg;
         p->bg = bg;
         p->c = c;
         
         return 1;
-    }
+    }  
     
     return 0;
 }
@@ -119,29 +119,27 @@ int pushPixelMatrix(matrix *m, int x, int y, COULEUR_TERMINAL fg, COULEUR_TERMIN
  * Ajoute un texte dans la matrice
  * 
  * \param m : Pointeur vers la matrice à modifier
- * \param x : Ligne de la 1ère case de la matrice où afficher le texte
- * \param y : Colonne de la 1ère case de la matrice où afficher le texte
+ * \param ligne : Ligne de la 1ère case de la matrice où afficher le texte
+ * \param colonne : Colonne de la 1ère case de la matrice où afficher le texte
  * \param fg : Couleur du texte
  * \param bg : Couleur de l'arrière plan du texte
  * \param s : Chaîne à affichier
  * 
  * Retourne 1 si la modification a réussie, -1 si le texte a dépassé, 0 sinon.
  */
-int pushTextMatrix(matrix *m, int x, int y, COULEUR_TERMINAL fg, COULEUR_TERMINAL bg, char* s)
+int pushTextMatrix(matrix *m, int ligne, int colonne, COULEUR_TERMINAL fg, COULEUR_TERMINAL bg, char* s)
 {
-    if(coordInMatrix(m, x, y))
+    if(coordInMatrix(m, ligne, colonne))
     {
         int length = strlen(s), i;
         for(i = 0; i < length; i++)
         {
-            if(coordInMatrix(m, x+i, y))
-            {
-                pixel *p = getPixelMatrix(m, x+i, y);
+            pixel *p = getPixelMatrix(m, ligne+i, colonne);
+            if(p != NULL) {
                 p->fg = fg;
                 p->bg = bg;
                 p->c = s[i];
-            }
-            else
+            } else
                 return -1;
         }
     
@@ -173,8 +171,8 @@ void clearMatrix(matrix *m)
  * Ajoute un texte dans la matrice
  * 
  * \param m : Pointeur vers la matrice à modifier
- * \param x : Ligne de la 1ère case de la matrice où afficher le rectangle
- * \param y : Colonne de la 1ère case de la matrice où afficher le rectangle
+ * \param ligne : Ligne de la 1ère case de la matrice où afficher le rectangle
+ * \param colonne : Colonne de la 1ère case de la matrice où afficher le rectangle
  * \param w : Largeur du rectangle
  * \param h : Hauteur du rectangle
  * \param fg : Couleur du rectangle
@@ -183,23 +181,23 @@ void clearMatrix(matrix *m)
  * 
  * Retourne 1 si la modification a réussie, -1 si le rectangle a dépassé, 0 sinon.
  */
-int pushRectMatrix(matrix *m, int x, int y, int w, int h, COULEUR_TERMINAL fg, COULEUR_TERMINAL bg, char c)
+int pushRectMatrix(matrix *m, int ligne, int colonne, int w, int h, COULEUR_TERMINAL fg, COULEUR_TERMINAL bg, char c)
 {
-    if(coordInMatrix(m, x, y))
+    if(coordInMatrix(m, ligne, colonne))
     {
-        int i, j;
+        int i, j, retVal = 1;
         for(i = 0; i < h; i++)
         {
             for(j = 0; j < w; j++)
             {
-                if(!pushPixelMatrix(m, x+j, y+i, fg, bg, c))
+                if(pushPixelMatrix(m, ligne+j, colonne+i, fg, bg, c))
                 {
-                    return -1;
+                    retVal = -1;
                 }
             }
         }
 
-        return 1;
+        return retVal;
     }
     
     return 0;
