@@ -1,6 +1,8 @@
 #include "matrix.h"
 #include <string.h>
 
+// #define DEBUG
+
 /**
  * Initialise une matrice d'affichage.
  * 
@@ -16,7 +18,7 @@ void initMatrix(matrix *m, int w, int h)
     m->p = calloc(w*h, sizeof(pixel));
     if(m->p == NULL)
     {
-        fprintf(stderr, "Impossible d'allouer la memoire\n");
+        fprintf(stderr, "\nError : Can't allocate memory (init matrix).\n");
         exit(EXIT_FAILURE);
     }
 }
@@ -42,19 +44,28 @@ void flushMatrix(matrix *m)
 {
     CLEAR();
     
-    int ligne, col;
-    for(col = 0; col < m->h; col++)
+    int line, col;
+    pixel *p;
+
+    #ifdef DEBUG
+        printf("m->h = %d\nm->w = %d\n", m->h, m->w);
+    #endif
+
+    for (line = 0; line < m->h; ++line)
     {
-        for(ligne = 0; ligne < m->w; ligne++)
+        for (col = 0; col < m->w; ++col)
         {
-            pixel *p = getPixelMatrix(m, ligne, col);
+            p = getPixelMatrix(m, line, col);
+
             if(p != NULL)
-            {
                 color_printf(p->fg, p->bg, "%c", (p->c < 32) ? ' ' : p->c);
-            } else {
+            else
+            {
+                #ifdef DEBUG
+                    printf("\nError : Out of matrix (flush).\n");
+                #endif
                 exit(EXIT_FAILURE);
             }
-            
         }
         printf("\n");
     }
@@ -70,7 +81,7 @@ void flushMatrix(matrix *m)
  */
 int coordInMatrix(matrix *m, int ligne, int colonne)
 {
-    return (ligne >= 0) && (ligne < m->w) && (colonne >= 0) && (colonne < m->h);
+    return (ligne >= 0) && (ligne < m->h) && (colonne >= 0) && (colonne < m->w);
 }
 
 /**
@@ -83,9 +94,14 @@ int coordInMatrix(matrix *m, int ligne, int colonne)
 pixel* getPixelMatrix(matrix *m, int ligne, int colonne)
 {
     if(coordInMatrix(m, ligne, colonne))
-        return &m->p[m->w * colonne + ligne];
+        return &m->p[m->w * ligne + colonne];
     else
+    {
+        #ifdef DEBUG
+            printf("\nAlert : Pixel is not in the matrix (getPixelMatrix(m, %d, %d))\n", ligne, colonne);
+        #endif
         return NULL;
+    }
 }
 
 /**
@@ -129,23 +145,29 @@ int pushPixelMatrix(matrix *m, int ligne, int colonne, COULEUR_TERMINAL fg, COUL
  */
 int pushTextMatrix(matrix *m, int ligne, int colonne, COULEUR_TERMINAL fg, COULEUR_TERMINAL bg, char* s)
 {
-    if(coordInMatrix(m, ligne, colonne))
+    if (!coordInMatrix(m, ligne, colonne))
     {
-        int length = strlen(s), i;
-        for(i = 0; i < length; i++)
-        {
-            pixel *p = getPixelMatrix(m, ligne+i, colonne);
-            if(p != NULL) {
-                p->fg = fg;
-                p->bg = bg;
-                p->c = s[i];
-            } else
-                return -1;
-        }
-    
-        return 1;
+        #ifdef DEBUG
+            printf("\nAlert : Text is not in matrix (pushTextMatrix)\n");
+            return 0;
+        #endif
     }
-    
+
+    int length = strlen(s), i;
+    pixel *p;
+
+    for (i = 0; i < length; ++i)
+    {
+        p = getPixelMatrix(m, ligne, colonne + i);
+
+        if (p != NULL)
+        {
+            p->fg = fg;
+            p->bg = bg;
+            p->c = s[i];
+        }
+    }
+
     return 0;
 }
 
@@ -156,12 +178,12 @@ int pushTextMatrix(matrix *m, int ligne, int colonne, COULEUR_TERMINAL fg, COULE
  */
 void clearMatrix(matrix *m)
 {
-    int i, j;
-    for(i = 0; i < m->h; i++)
+    int ligne, colonne;
+    for(ligne = 0; ligne < m->h; ligne++)
     {
-        for(j = 0; j < m->w; j++)
+        for(colonne = 0; colonne < m->w; colonne++)
         {
-            pushPixelMatrix(m, i, j, BLACK, BLACK, '\0');
+            pushPixelMatrix(m, ligne, colonne, BLACK, BLACK, '\0');
         }
     }
 }
@@ -183,21 +205,25 @@ void clearMatrix(matrix *m)
  */
 int pushRectMatrix(matrix *m, int ligne, int colonne, int w, int h, COULEUR_TERMINAL fg, COULEUR_TERMINAL bg, char c)
 {
-    if(coordInMatrix(m, ligne, colonne))
+    if (!coordInMatrix(m, ligne, colonne))
     {
-        int i, j, retVal = 1;
-        for(i = 0; i < h; i++)
+        #ifdef DEBUG
+            printf("\nAlert : Rect is not in matrix (pushRectMatrix)\n");
+            return 0;
+        #endif
+    }
+
+    int i, j;
+
+    for (i = 0; i < h; ++i)
+    {
+        for (j = 0; j < w; ++j)
         {
-            for(j = 0; j < w; j++)
+            if (coordInMatrix(m, i, j))
             {
-                if(pushPixelMatrix(m, ligne+j, colonne+i, fg, bg, c))
-                {
-                    retVal = -1;
-                }
+                pushPixelMatrix(m, ligne+i, colonne+j, fg, bg, c);
             }
         }
-
-        return retVal;
     }
     
     return 0;
