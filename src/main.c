@@ -30,6 +30,10 @@ int main()
     setVal(&j, 0, 0, 4);
     setVal(&j, 0, 1, 2);
     setVal(&j, 2, 1, 512);
+    setVal(&j, 3, 1, 1024);
+    ajouteValAlea(&j);
+    ajouteValAlea(&j);
+    ajouteValAlea(&j);
     affichageMatrice(&j, &m);
     
     freeMatrix(&m);
