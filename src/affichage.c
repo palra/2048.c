@@ -224,14 +224,13 @@ void affichageCaseMatrice(jeu *p, matrix *m, int ligne, int colonne)
     int nbChiffres = nbDigits(val);
     COULEUR_TERMINAL couleur = choisirCouleur(val);
 
-    pushRectMatrix(m, ligne*largeurCase, colonne*hauteurCase, largeurCase, hauteurCase ,couleur, couleur, ' ');
+    pushRectMatrix(m, colonne*largeurCase, ligne*hauteurCase, largeurCase, hauteurCase ,couleur, couleur, ' ');
 
     char text[15] = ".";
     if(val != 0)
         sprintf(text, "%d", val);
-    pushTextMatrix(m, ligne*largeurCase + largeurCase/2 - nbChiffres/2,  colonne*hauteurCase + hauteurCase/2, WHITE, couleur, text);
+    pushTextMatrix(m, colonne*largeurCase + largeurCase/2 - nbChiffres/2,  ligne*hauteurCase + hauteurCase/2, WHITE, couleur, text);
 }
-
 
 /*! \fn affichageMatrice
  *  
