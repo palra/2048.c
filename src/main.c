@@ -2,6 +2,7 @@
 #include "color.h"
 #include "affichage.h"
 #include "matrix.h"
+#include "saisieM.h"
 
 #include <stdio.h>
 
@@ -27,14 +28,36 @@ int main()
     initialiseJeu(&j, DIM_JEU, FIN_JEU);
     initMatrix(&m, DIM_JEU*7, DIM_JEU*3);
     
-    setVal(&j, 0, 0, 4);
-    setVal(&j, 0, 1, 2);
-    setVal(&j, 2, 1, 512);
-    setVal(&j, 3, 1, 1024);
-    ajouteValAlea(&j);
+    int run = 1;
+
     ajouteValAlea(&j);
     ajouteValAlea(&j);
     affichageMatrice(&j, &m);
+    debutTerminalSansR();
+    while (run)
+    {
+        switch (lectureFleche())
+        {
+            case KEY_UP:
+                affichageMatrice(&j, &m);
+                break;
+            case KEY_DOWN:
+                affichageMatrice(&j, &m);
+                break;
+            case KEY_RIGHT:
+                affichageMatrice(&j, &m);
+                break;
+            case KEY_LEFT:
+                affichageMatrice(&j, &m);
+                break;
+            case KEY_ESCAPE:
+                run = 0;
+                break;
+            default:
+                break;
+        }
+    }
+    finTerminalSansR();
     
     freeMatrix(&m);
     libereMemoire(&j);
