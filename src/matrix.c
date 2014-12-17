@@ -42,7 +42,11 @@ void freeMatrix(matrix *m)
  */
 void flushMatrix(matrix *m)
 {
-    CLEAR();
+    #ifndef DEBUG
+        CLEAR();
+    #else
+        printf("\n\n\n");
+    #endif
     
     int line, col;
     pixel *p;
