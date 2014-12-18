@@ -3,8 +3,8 @@ CFLAGS=-Wall
 LDFLAGS=-lm
 EXEC=2048
 TEXEC=2048test
-SRC= $(wildcard src/*.c)
-TEST := $(wildcard src/*.c test/*.c)
+SRC= $(wildcard src/*.c lib/*.c)
+TEST := $(SRC) $(wildcard test/*.c)
 TEST := $(filter-out src/main.c, $(TEST))
 OBJ= $(SRC:.c=.o)
 

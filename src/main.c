@@ -1,8 +1,9 @@
 #include "jeu.h"
-#include "color.h"
 #include "affichage.h"
 #include "matrix.h"
-#include "saisieM.h"
+
+#include "../lib/saisieM.h"
+#include "../lib/color.h"
 
 #include <stdio.h>
 

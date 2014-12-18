@@ -4,7 +4,7 @@
 #include <stdlib.h>
 
 #include "jeu.h"
-#include "color.h"
+#include "../lib/color.h"
 #include "matrix.h"
 
 #ifdef OLD_VERSION
