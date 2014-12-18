@@ -37,6 +37,16 @@ void matrix_pixel_test()
     
     describe("Pixel");
     
+        describe("getPixelMatrix");
+            
+            pixel *p = getPixelMatrix(&m, 4, 7);
+            assertDiff("getPixelMatrix doit renvoyer un pointeur pour une position correcte", p, NULL);
+            
+            p = getPixelMatrix(&m, 4564, 7946);
+            assertEql(".. et NULL pour une position incorrecte", p, NULL);
+            
+        endDescribe();
+        
     endDescribe();
     
     freeMatrix(&m);
@@ -46,6 +56,6 @@ void test_matrix()
 {
     describe("Matrice d'affichage");
         matrix_alloc_asserts();
-        matrix_pixel_test():
+        matrix_pixel_test();
     endDescribe();
 }

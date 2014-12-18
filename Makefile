@@ -4,7 +4,8 @@ LDFLAGS=-lm
 EXEC=2048
 TEXEC=2048test
 SRC= $(wildcard src/*.c)
-TEST= $(wildcard src/*.c test/*.c)
+TEST := $(wildcard src/*.c test/*.c)
+TEST := $(filter-out src/main.c, $(TEST))
 OBJ= $(SRC:.c=.o)
 
 run: mrproper all

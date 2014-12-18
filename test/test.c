@@ -78,7 +78,7 @@ void assertDiff(char *desc, int test, int notExpect)
     {
         color_printf(RED, BLACK, "%s\n", FAILED_STR);
         _printOffset();
-        color_printf(RED, BLACK, "Expected %d to be %d.", test, notExpect);
+        color_printf(RED, BLACK, "Expected %d not to be %d.", test, notExpect);
         _nbFailedAsserts++;
     }
     
