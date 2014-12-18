@@ -220,16 +220,29 @@ COULEUR_TERMINAL choisirCouleur(int nombre)
 
 void affichageCaseMatrice(jeu *p, matrix *m, int ligne, int colonne)
 {
+    int i = 0;
+    while (largeurCase * i * p->n < m->w && hauteurCase * i * p->n < m->h)
+        ++i;
+    --i;
+
+    hauteurCase *= i;
+    largeurCase *= i;
+
+    if (largeurCase%2 == 0)
+        largeurCase--;
+    if (hauteurCase%2 == 0)
+        hauteurCase--;
+
     int val = getVal(p, ligne, colonne);
     int nbChiffres = nbDigits(val);
     COULEUR_TERMINAL couleur = choisirCouleur(val);
 
-    pushRectMatrix(m, ligne*hauteurCase, colonne*largeurCase, largeurCase, hauteurCase ,couleur, couleur, ' ');
+    pushRectMatrix(m, ligne*hauteurCase + ((m->h - hauteurCase * p->n) / 2), colonne*largeurCase + ((m->w - largeurCase * p->n) / 2), largeurCase, hauteurCase ,couleur, couleur, ' ');
 
     char text[15] = ".";
     if(val != 0)
         sprintf(text, "%d", val);
-    pushTextMatrix(m, ligne*hauteurCase + hauteurCase/2,  colonne*largeurCase + largeurCase/2 - nbChiffres/2, WHITE, couleur, text);
+    pushTextMatrix(m, ligne*hauteurCase + hauteurCase/2 + ((m->h - hauteurCase * p->n) / 2),  colonne*largeurCase + largeurCase/2 - nbChiffres/2 + ((m->w - largeurCase * p->n) / 2), WHITE, couleur, text);
 }
 
 /*! \fn affichageMatrice
@@ -244,11 +257,6 @@ void affichageMatrice(jeu *p, matrix *m)
     int i, j;
 
     clearMatrix(m);
-
-    if (largeurCase%2 == 0)
-        largeurCase++;
-    if (hauteurCase%2 == 0)
-        hauteurCase++;
 
     for(i = 0; i < p->n; i++)
     {

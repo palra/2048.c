@@ -26,20 +26,17 @@ int main()
     jeu j;
     matrix m;
 
+    int winW, winH;
+
+    getWinSize(&winW, &winH);
+
     initialiseJeu(&j, DIM_JEU, FIN_JEU);
-    initMatrix(&m, DIM_JEU*7, DIM_JEU*3);
+    initMatrix(&m, winW, winH - 1);
 
     int run = 1;
 
-    setVal(&j, 0, 0, 4);
-    setVal(&j, 0, 1, 4);
-    setVal(&j, 0, 2, 2);
-    setVal(&j, 0, 3, 2);
-
-    setVal(&j, 1, 0, 4);
-    setVal(&j, 1, 1, 2);
-    setVal(&j, 1, 2, 4);
-    setVal(&j, 1, 3, 4);
+    ajouteValAlea(&j);
+    ajouteValAlea(&j);
 
     affichageMatrice(&j, &m);
     debutTerminalSansR();
@@ -48,9 +45,19 @@ int main()
         switch (lectureFleche())
         {
             case KEY_UP:
+                mouvementColonne(&j, 0, 1);
+                mouvementColonne(&j, 1, 1);
+                mouvementColonne(&j, 2, 1);
+                mouvementColonne(&j, 3, 1);
+                ajouteValAlea(&j);
                 affichageMatrice(&j, &m);
                 break;
             case KEY_DOWN:
+                mouvementColonne(&j, 0, -1);
+                mouvementColonne(&j, 1, -1);
+                mouvementColonne(&j, 2, -1);
+                mouvementColonne(&j, 3, -1);
+                ajouteValAlea(&j);
                 affichageMatrice(&j, &m);
                 break;
             case KEY_RIGHT:
@@ -58,6 +65,7 @@ int main()
                 mouvementLigne(&j, 1, -1);
                 mouvementLigne(&j, 2, -1);
                 mouvementLigne(&j, 3, -1);
+                ajouteValAlea(&j);
                 affichageMatrice(&j, &m);
                 break;
             case KEY_LEFT:
@@ -65,6 +73,7 @@ int main()
                 mouvementLigne(&j, 1, 1);
                 mouvementLigne(&j, 2, 1);
                 mouvementLigne(&j, 3, 1);
+                ajouteValAlea(&j);
                 affichageMatrice(&j, &m);
                 break;
             case KEY_ESCAPE:
