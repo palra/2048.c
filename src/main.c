@@ -3,6 +3,7 @@
 #include "affichage.h"
 #include "matrix.h"
 #include "saisieM.h"
+#include "util.h"
 
 #include <stdio.h>
 
@@ -25,8 +26,12 @@ int main()
     jeu j;
     matrix m;
 
+    int winW, winH;
+
+    getWinSize(&winW, &winH);
+
     initialiseJeu(&j, DIM_JEU, FIN_JEU);
-    initMatrix(&m, DIM_JEU*7, DIM_JEU*3);
+    initMatrix(&m, winW, winH - 1);
 
     int run = 1;
 
