@@ -308,8 +308,6 @@ int saisieD()
     Key key;
     int returnVal;
 
-    debutTerminalSansR();
-
     key = lectureFleche();
     switch (key)
     {
@@ -331,8 +329,6 @@ int saisieD()
         default:
             break;
     }
-
-    finTerminalSansR();
 
     return returnVal;
 }

@@ -17,7 +17,7 @@ int c;
 void testPartie1();
 void testPartie2();
 
-#define DIM_JEU 6
+#define DIM_JEU 12
 #define FIN_JEU 2048
 
 int main()
@@ -39,6 +39,8 @@ int main()
     ajouteValAlea(&j);
     ajouteValAlea(&j);
 
+    debutTerminalSansR();
+
     while (run)
     {
         affichageMatrice(&j, &m);
@@ -53,6 +55,8 @@ int main()
                 ajouteValAlea(&j);
         }
     }
+
+    finTerminalSansR();
 
     freeMatrix(&m);
     libereMemoire(&j);
