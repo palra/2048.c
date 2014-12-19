@@ -2,8 +2,6 @@
 
 #include "../lib/color.h"
 
-#define CLEAR() printf("\e[1;1H\e[2J")
-
 typedef struct
 {
     COULEUR_TERMINAL fg, bg;

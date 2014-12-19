@@ -1,6 +1,7 @@
 #include "jeu.h"
 #include "affichage.h"
 #include "matrix.h"
+#include "mouvement.h"
 
 #include "../lib/saisieM.h"
 #include "../lib/color.h"
@@ -16,7 +17,7 @@ int c;
 void testPartie1();
 void testPartie2();
 
-#define DIM_JEU 4
+#define DIM_JEU 6
 #define FIN_JEU 2048
 
 int main()
@@ -33,57 +34,25 @@ int main()
     initialiseJeu(&j, DIM_JEU, FIN_JEU);
     initMatrix(&m, winW, winH - 1);
 
-    int run = 1;
+    int run = 1, mouvementChoisi = 0;
 
     ajouteValAlea(&j);
     ajouteValAlea(&j);
 
-    affichageMatrice(&j, &m);
-    debutTerminalSansR();
     while (run)
     {
-        switch (lectureFleche())
+        affichageMatrice(&j, &m);
+
+        int mouvementChoisi = saisieD();
+        printf("%d", mouvementChoisi);
+        if(mouvementChoisi == MVT_STOP)
         {
-            case KEY_UP:
-                mouvementColonne(&j, 0, 1);
-                mouvementColonne(&j, 1, 1);
-                mouvementColonne(&j, 2, 1);
-                mouvementColonne(&j, 3, 1);
+            run = 0;
+        } else {
+            if(mouvement(&j, mouvementChoisi))
                 ajouteValAlea(&j);
-                affichageMatrice(&j, &m);
-                break;
-            case KEY_DOWN:
-                mouvementColonne(&j, 0, -1);
-                mouvementColonne(&j, 1, -1);
-                mouvementColonne(&j, 2, -1);
-                mouvementColonne(&j, 3, -1);
-                ajouteValAlea(&j);
-                affichageMatrice(&j, &m);
-                break;
-            case KEY_RIGHT:
-                mouvementLigne(&j, 0, -1);
-                mouvementLigne(&j, 1, -1);
-                mouvementLigne(&j, 2, -1);
-                mouvementLigne(&j, 3, -1);
-                ajouteValAlea(&j);
-                affichageMatrice(&j, &m);
-                break;
-            case KEY_LEFT:
-                mouvementLigne(&j, 0, 1);
-                mouvementLigne(&j, 1, 1);
-                mouvementLigne(&j, 2, 1);
-                mouvementLigne(&j, 3, 1);
-                ajouteValAlea(&j);
-                affichageMatrice(&j, &m);
-                break;
-            case KEY_ESCAPE:
-                run = 0;
-                break;
-            default:
-                break;
         }
     }
-    finTerminalSansR();
 
     freeMatrix(&m);
     libereMemoire(&j);

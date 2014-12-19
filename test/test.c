@@ -1,5 +1,5 @@
 #include "test.h"
-#include "../src/color.h"
+#include "../lib/color.h"
 #include <stdio.h>
 
 #define OFFSET_STR "    "
@@ -156,9 +156,10 @@ void recap()
         (_nbFailedAsserts == 0) ? GREEN : RED,
         BLACK,
         
-        "\n%d of %d assert(s) passed.\n%s.\n",
+        "\n%d of %d assert(s) passed.\n%s.",
         _nbAsserts - _nbFailedAsserts,
         _nbAsserts,
         (_nbFailedAsserts == 0) ? "Success": "Failure"
     );
+    printf("\n");
 }

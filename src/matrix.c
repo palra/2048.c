@@ -1,4 +1,5 @@
 #include "matrix.h"
+#include "util.h"
 #include <string.h>
 
 // #define DEBUG

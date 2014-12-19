@@ -1,4 +1,5 @@
 #include "mouvement.h"
+#include "../lib/saisieM.h"
 
 /*! mouvementLigne
  *  
@@ -240,6 +241,98 @@ int mouvementColonne(jeu *j, int indice, int direction)
             }
         }
     }
+
+    return returnVal;
+}
+
+/*!
+ * Effectue le mouvement de toutes les lignes du jeu
+ * 
+ * \param  j         Pointeur vers le jeu
+ * \param  direction -1 pour un mouvement à droite, 1 pour un mouvement à gauche
+ * \return           1 si au moins un bloc a été déplace, 0 sinon
+ */
+int mouvementLignes(jeu *j, int direction)
+{
+    int i, retVal = 0; // compte le nombre de fois où un mouvement a bougé + d'une case
+    for(i = 0; i < j->n; i++)
+        retVal += mouvementLigne(j, i, direction);
+
+    return retVal > 0;
+}
+
+/*!
+ * Effectue le mouvement de toutes les colonnes du jeu
+ * 
+ * \param  j         Pointeur vers le jeu
+ * \param  direction -1 pour un mouvement en bas, 1 pour un mouvement en haut
+ * \return           1 si au moins un bloc a été déplace, 0 sinon
+ */
+int mouvementColonnes(jeu *j, int direction)
+{
+    int i, retVal = 0; // compte le nombre de fois où un mouvement a bougé + d'une case
+    for(i = 0; i < j->n; i++)
+        retVal += mouvementColonne(j, i, direction);
+
+    return retVal > 0;
+}
+/*!
+ * Effectue le mouvement sur les lignes ou sur les colonnes suivant la valeur de direction.
+ * \param p : pointeur sur un jeu
+ * \param direction : entier donnant la direction :
+ *   MVT_BAS = 0 : vers le bas
+ *   MVT_DROITE = 1 : vers la droite
+ *   MVT_HAUT = 2 : vers le haut
+ *   MVT_GAUCHE = 3 : vers la gauche
+ * Renvoie 1 si l’on a deplacé au moins une case, 0 sinon
+ */
+int mouvement(jeu *j, int direction)
+{
+    switch(direction)
+    {
+        case MVT_BAS:
+            return mouvementColonnes(j, -1);
+        case MVT_DROITE:
+            return mouvementLignes(j, -1);
+        case MVT_HAUT:
+            return mouvementColonnes(j, 1);
+        case MVT_GAUCHE:
+            return mouvementLignes(j, 1);
+        default:
+            return 0;
+    }
+}
+
+int saisieD()
+{
+    Key key;
+    int returnVal;
+
+    debutTerminalSansR();
+
+    key = lectureFleche();
+    switch (key)
+    {
+        case KEY_UP:
+            returnVal = MVT_HAUT;
+            break;
+        case KEY_DOWN:
+            returnVal = MVT_BAS;
+            break;
+        case KEY_RIGHT:
+            returnVal = MVT_DROITE;
+            break;
+        case KEY_LEFT:
+            returnVal = MVT_GAUCHE;
+            break;
+        case KEY_ESCAPE:
+            returnVal = MVT_STOP;
+            break;
+        default:
+            break;
+    }
+
+    finTerminalSansR();
 
     return returnVal;
 }
