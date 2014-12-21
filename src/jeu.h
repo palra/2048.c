@@ -2,6 +2,15 @@
 #define JEU_H
 
 #include <stdlib.h>
+#include <stdio.h>
+
+#include "matrix.h"
+
+#define MVT_STOP -1
+#define MVT_BAS 0
+#define MVT_DROITE 1
+#define MVT_HAUT 2
+#define MVT_GAUCHE 3
 
 typedef struct {
     int n;
@@ -21,5 +30,7 @@ void ajouteValAlea(jeu *p);
 int gagne(jeu *p);
 int perdu(jeu *p);
 int finPartie(jeu *p);
+
+int jouer(jeu *p, matrix *m);
 
 #endif

@@ -1,6 +1,4 @@
 #include "jeu.h"
-#include <stdlib.h>
-#include <stdio.h>
 
 /*! \fn initialiseJeu
  * Alloue la grille de la variable jeu passée par adresse.
@@ -200,4 +198,30 @@ int perdu(jeu *p)
 int finPartie(jeu *p)
 {
     return gagne(p) || perdu(p);
+}
+
+int jouer(jeu *p, matrix *m)
+{
+    int run = 1, mouvementChoisi = 0;
+
+    debutTerminalSansR();
+
+    ajouteValAlea(p);
+    ajouteValAlea(p);
+
+    while (run)
+    {
+        affichageMatrice(p, m);
+
+        int mouvementChoisi = saisieD();
+        if(mouvementChoisi == MVT_STOP)
+        {
+            run = 0;
+        } else {
+            if(mouvement(p, mouvementChoisi))
+                ajouteValAlea(p);
+        }
+    }
+
+    finTerminalSansR();
 }

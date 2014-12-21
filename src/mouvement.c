@@ -1,5 +1,4 @@
 #include "mouvement.h"
-#include "../lib/saisieM.h"
 
 /*! mouvementLigne
  *  
