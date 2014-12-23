@@ -24,7 +24,7 @@ int main()
     initialiseJeu(&j, DIM_JEU, FIN_JEU);
     initMatrix(&m, winW, winH - 1);
 
-    jouer(&j, &m);
+    menu(&m);
 
     freeMatrix(&m);
     libereMemoire(&j);
