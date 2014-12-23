@@ -32,6 +32,7 @@ int menu(matrix *m)
         for (i = 0; i < NB_BUTTON; i ++)
         {
             pushRectMatrix(m, i * (buttonHeight + 1), 0, buttonWidth, buttonHeight, BLACK, WHITE, ' ');
+            pushTextMatrix(m, i * (buttonHeight + 1) + (buttonHeight / 2), buttonWidth / 2 - strlen(button[i].text) / 2, BLACK, WHITE, button[i].text);
         }
 
         flushMatrix(m);
