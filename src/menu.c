@@ -25,19 +25,21 @@ int menu(matrix *m)
 
     debutTerminalSansR();
 
-    // while (run)
-    // {
+    while (run)
+    {
         clearMatrix(m);
 
         for (i = 0; i < NB_BUTTON; i ++)
         {
-        	pushRectMatrix(m, i * (buttonHeight + 1), 0, buttonWidth, buttonHeight, BLACK, WHITE, ' ');
+            pushRectMatrix(m, i * (buttonHeight + 1), 0, buttonWidth, buttonHeight, BLACK, WHITE, ' ');
         }
 
         flushMatrix(m);
 
-    //     int mouvementChoisi = saisieD();
-    // }
+        int mouvementChoisi = lectureFleche();
+        if (mouvementChoisi == NO_KEY)
+            run = 0;
+    }
 
     finTerminalSansR();
 }

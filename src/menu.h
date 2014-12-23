@@ -2,6 +2,7 @@
 
 #include "matrix.h"
 #include "../lib/color.h"
+#include "../lib/saisieM.h"
 
 typedef enum
 {
