@@ -52,8 +52,8 @@ int menu(matrix *m)
             }
 
             // Affichage du rectangle et du texte
-            pushRectMatrix(m, i * (buttonHeight + 1), 0, buttonWidth, buttonHeight, fg, bg, ' ');
-            pushTextMatrix(m, i * (buttonHeight + 1) + (buttonHeight / 2), buttonWidth / 2 - strlen(button[i].text) / 2, fg, bg, button[i].text);
+            pushRectMatrix(m, i * (buttonHeight + 1) + m->h / 2 - NB_BUTTON * (buttonHeight + 1) / 2, m->w / 2 - buttonWidth / 2, buttonWidth, buttonHeight, fg, bg, ' ');
+            pushTextMatrix(m, i * (buttonHeight + 1) + (buttonHeight / 2) + m->h / 2 - NB_BUTTON * (buttonHeight + 1) / 2, buttonWidth / 2 - strlen(button[i].text) / 2 + m->w / 2 - buttonWidth / 2, fg, bg, button[i].text);
         }
 
         flushMatrix(m);
@@ -83,4 +83,6 @@ int menu(matrix *m)
     }
 
     finTerminalSansR();
+
+    return button[buttonSelect].choice;
 }

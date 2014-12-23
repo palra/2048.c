@@ -2,6 +2,7 @@
 #include "matrix.h"
 #include "jeu.h"
 #include "mouvement.h"
+#include "menu.h"
 
 #include "../lib/saisieM.h"
 #include "../lib/color.h"
@@ -24,7 +25,10 @@ int main()
     initialiseJeu(&j, DIM_JEU, FIN_JEU);
     initMatrix(&m, winW, winH - 1);
 
-    menu(&m);
+    menuChoice choice = menu(&m);
+
+    if (choice == PLAY)
+        jouer(&j, &m);
 
     freeMatrix(&m);
     libereMemoire(&j);
