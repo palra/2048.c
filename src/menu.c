@@ -5,8 +5,8 @@
 int menu(matrix *m)
 {
 	int run = 1, 
-		mouvementChoisi = 0,
-		bouttonSelect = 0,
+		pressedKey = 0,
+		buttonSelect = 0,
 		i = 0;
 
 	menuButton button[NB_BUTTON];
@@ -23,6 +23,9 @@ int menu(matrix *m)
 	int buttonHeight = 3;
 	int buttonWidth = 25;
 
+    COULEUR_TERMINAL fg;
+    COULEUR_TERMINAL bg;
+
     debutTerminalSansR();
 
     while (run)
@@ -31,15 +34,46 @@ int menu(matrix *m)
 
         for (i = 0; i < NB_BUTTON; i ++)
         {
-            pushRectMatrix(m, i * (buttonHeight + 1), 0, buttonWidth, buttonHeight, BLACK, WHITE, ' ');
-            pushTextMatrix(m, i * (buttonHeight + 1) + (buttonHeight / 2), buttonWidth / 2 - strlen(button[i].text) / 2, BLACK, WHITE, button[i].text);
+            if (i == buttonSelect)
+            {
+                fg = WHITE;
+                bg = RED;
+            }
+
+            else
+            {
+                fg = BLACK;
+                bg = WHITE;
+            }
+
+            pushRectMatrix(m, i * (buttonHeight + 1), 0, buttonWidth, buttonHeight, fg, bg, ' ');
+            pushTextMatrix(m, i * (buttonHeight + 1) + (buttonHeight / 2), buttonWidth / 2 - strlen(button[i].text) / 2, fg, bg, button[i].text);
         }
 
         flushMatrix(m);
 
-        int mouvementChoisi = lectureFleche();
-        if (mouvementChoisi == NO_KEY)
-            run = 0;
+        int pressedKey = lectureFleche();
+
+        switch (pressedKey)
+        {
+            case NO_KEY:
+                run = 0;
+                break;
+            case KEY_UP:
+                if (buttonSelect > 0)
+                    buttonSelect--;
+                else
+                    buttonSelect = NB_BUTTON - 1;
+                break;
+            case KEY_DOWN:
+                if (buttonSelect < NB_BUTTON - 1)
+                    buttonSelect++;
+                else
+                    buttonSelect = 0;
+                break;
+            default:
+                break;
+        }
     }
 
     finTerminalSansR();
