@@ -17,4 +17,4 @@ typedef struct
 	char *text;
 } menuButton;
 
-int menu(matrix *m);
+int menu(matrix *m, menuButton button[], int nbButtons);
