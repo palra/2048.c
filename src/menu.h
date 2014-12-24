@@ -8,7 +8,9 @@ typedef enum
 {
 	PLAY,
 	LOAD,
-	EXIT
+	EXIT,
+	RESUME,
+	SAVE
 } menuChoice;
 
 typedef struct

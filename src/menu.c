@@ -26,7 +26,7 @@ int menu(matrix *m, menuButton button[], int nbButtons)
 
     while (run)
     {
-        clearMatrix(m);
+        //clearMatrix(m);
 
         // Fond du menu
         pushRectMatrix(m, m->h / 2 - nbButtons * (buttonHeight + 1) / 2 - 1, m->w / 2 - buttonWidth / 2 - 1, buttonWidth + 2, nbButtons * (buttonHeight + 1) + 1, WHITE, WHITE, ' ');

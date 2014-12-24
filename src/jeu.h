@@ -5,6 +5,7 @@
 #include <stdio.h>
 
 #include "matrix.h"
+#include "menu.h"
 
 #define MVT_STOP -1
 #define MVT_BAS 0
