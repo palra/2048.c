@@ -50,6 +50,7 @@ int mouvementLigne(jeu *j, int indice, int direction)
                 setVal(j, indice, pos + 1, 0);
 
                 returnVal = 1;
+                j->score += getVal(j, indice, pos);
             }
         }
 
@@ -100,6 +101,7 @@ int mouvementLigne(jeu *j, int indice, int direction)
                 setVal(j, indice, pos - 1, 0);
 
                 returnVal = 1;
+                j->score += getVal(j, indice, pos);
             }
         }
 
@@ -172,6 +174,7 @@ int mouvementColonne(jeu *j, int indice, int direction)
                 setVal(j, pos + 1, indice, 0);
 
                 returnVal = 1;
+                j->score += getVal(j, pos, indice);
             }
         }
 
@@ -222,6 +225,7 @@ int mouvementColonne(jeu *j, int indice, int direction)
                 setVal(j, pos - 1, indice, 0);
 
                 returnVal = 1;
+                j->score += getVal(j, pos, indice);
             }
         }
 

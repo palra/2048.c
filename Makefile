@@ -12,7 +12,7 @@ run: mrproper all
 	@./$(EXEC)
 
 test: mrproper $(TEXEC)
-	@./$(TEXEC)
+	@./$(TEXEC) | less -R
 
 all: $(EXEC)
 

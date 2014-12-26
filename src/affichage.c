@@ -2,6 +2,8 @@
 #include "matrix.h"
 #include "util.h"
 
+#include <string.h>
+
 
 #ifdef OLD_VERSION
 
@@ -239,11 +241,12 @@ void affichageCaseMatrice(jeu *p, matrix *m, int ligne, int colonne)
 
     pushRectMatrix(m, ligne*hauteurCase + ((m->h - hauteurCase * p->n) / 2), colonne*largeurCase + ((m->w - largeurCase * p->n) / 2), largeurCase, hauteurCase ,couleur, couleur, ' ');
 
-    char text[15] = ".";
     if(val != 0)
-        sprintf(text, "%d", val);
-    pushTextMatrix(m, ligne*hauteurCase + hauteurCase/2 + ((m->h - hauteurCase * p->n) / 2),  colonne*largeurCase + largeurCase/2 - nbChiffres/2 + ((m->w - largeurCase * p->n) / 2), WHITE, couleur, text);
+        pushIntMatrix(m, ligne*hauteurCase + hauteurCase/2 + ((m->h - hauteurCase * p->n) / 2),  colonne*largeurCase + largeurCase/2 - nbChiffres/2 + ((m->w - largeurCase * p->n) / 2), WHITE, couleur, val);
+    else
+        pushPixelMatrix(m, ligne*hauteurCase + hauteurCase/2 + ((m->h - hauteurCase * p->n) / 2),  colonne*largeurCase + largeurCase/2 - nbChiffres/2 + ((m->w - largeurCase * p->n) / 2), WHITE, couleur, '.');
 }
+
 
 /*! \fn affichageMatrice
  *  
@@ -257,6 +260,9 @@ void affichageMatrice(jeu *p, matrix *m)
     int i, j;
 
     clearMatrix(m);
+
+    pushTextMatrix(m, 0, 0, WHITE, BLACK, "Score : ");
+    pushIntMatrix(m, 0, 8, WHITE, BLACK, p->score);
 
     for(i = 0; i < p->n; i++)
     {
