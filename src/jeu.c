@@ -213,7 +213,7 @@ int jouer(jeu *p, matrix *m)
     button[1].choice = SAVE;
     button[1].text = "Sauvegarder";
     button[2].choice = EXIT;
-    button[2].text = "Quitter";
+    button[2].text = "Rtour au menu";
 
     debutTerminalSansR();
 
@@ -235,7 +235,7 @@ int jouer(jeu *p, matrix *m)
                 sauvegarde(p);
             debutTerminalSansR(); // Sans ça un double finTerminalSansR se fait dans menu()
         } 
-        else 
+        else
         {
             if(mouvement(p, mouvementChoisi))
                 ajouteValAlea(p);

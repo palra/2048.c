@@ -3,6 +3,7 @@
 #include "jeu.h"
 #include "mouvement.h"
 #include "menu.h"
+#include "save.h"
 
 #include "../lib/saisieM.h"
 #include "../lib/color.h"
