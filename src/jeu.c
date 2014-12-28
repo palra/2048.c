@@ -229,9 +229,11 @@ int jouer(jeu *p, matrix *m)
         {
             finTerminalSansR(); // Sans ça un double debutTerminalSansR se fait dans menu()
             choice = menu(m, button, NB_BUTTONS_MENU_PAUSE);
-            debutTerminalSansR(); // Sans ça un double finTerminalSansR se fait dans menu()
             if (choice == EXIT)
                 run = 0;
+            else if (choice == SAVE)
+                sauvegarde(p);
+            debutTerminalSansR(); // Sans ça un double finTerminalSansR se fait dans menu()
         } 
         else 
         {
