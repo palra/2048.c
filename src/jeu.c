@@ -207,9 +207,20 @@ int finPartie(jeu *p)
  * \param p : pointeur sur la partie en cours
  * \param p : pointeur sur la matrice d'affichage
  */
+#define NB_BUTTONS_MENU_PAUSE 3
+
 int jouer(jeu *p, matrix *m)
 {
     int run = 1, mouvementChoisi = 0;
+    menuChoice choice;
+
+    menuButton button[NB_BUTTONS_MENU_PAUSE];
+    button[0].choice = RESUME;
+    button[0].text = "Retour au jeu";
+    button[1].choice = SAVE;
+    button[1].text = "Sauvegarder";
+    button[2].choice = EXIT;
+    button[2].text = "Quitter";
 
     debutTerminalSansR();
 
@@ -223,9 +234,15 @@ int jouer(jeu *p, matrix *m)
         int mouvementChoisi = saisieD();
         if(mouvementChoisi == MVT_STOP)
         {
-            run = 0;
-        } else {
-            if(mouvement(p, mouvementChoisi) > 0) {
+            finTerminalSansR(); // Sans ça un double debutTerminalSansR se fait dans menu()
+            choice = menu(m, button, NB_BUTTONS_MENU_PAUSE);
+            debutTerminalSansR(); // Sans ça un double finTerminalSansR se fait dans menu()
+            if (choice == EXIT)
+                run = 0;
+        } 
+        else 
+        {
+            if(mouvement(p, mouvementChoisi)) {
                 ajouteValAlea(p);
             }
         }
