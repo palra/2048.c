@@ -6,6 +6,7 @@
 
 #include "matrix.h"
 #include "menu.h"
+#include "dialogBox.h"
 
 #define MVT_STOP -1
 #define MVT_BAS 0
