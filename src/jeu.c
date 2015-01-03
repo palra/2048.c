@@ -213,7 +213,7 @@ int jouer(jeu *p, matrix *m)
     button[1].choice = SAVE;
     button[1].text = "Sauvegarder";
     button[2].choice = EXIT;
-    button[2].text = "Rtour au menu";
+    button[2].text = "Retour au menu";
 
     debutTerminalSansR();
 
