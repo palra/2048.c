@@ -51,8 +51,6 @@ int main()
 
     } while (choice != EXIT);
 
-    dialogBox(0, &m, "Au revoir...");
-
     freeMatrix(&m);
     libereMemoire(&j);
 
