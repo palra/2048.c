@@ -36,10 +36,16 @@ int main()
     initialiseJeu(&j, DIM_JEU, FIN_JEU);
     initMatrix(&m, winW, winH - 1);
 
-    menuChoice choice = menu(&m, button, NB_BUTTONS_MENU);
+    menuChoice choice;
+    do
+    {
+        clearMatrix(&m);
+        choice = menu(&m, button, NB_BUTTONS_MENU);
 
-    if (choice == PLAY)
-        jouer(&j, &m);
+        if (choice == PLAY)
+            jouer(&j, &m);
+
+    } while (choice != EXIT);
 
     freeMatrix(&m);
     libereMemoire(&j);
