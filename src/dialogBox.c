@@ -69,7 +69,8 @@ int dialogBox(int mode, matrix *m, char *text)
 	debutTerminalSansR();
 	while (run)
 	{
-		pushRectMatrix(m, posY, posX, CAR_PER_LINE + 2, nbLines + 5, BLACK, WHITE, ' ');
+		pushRectMatrix(m, posY - 1, posX - 1, CAR_PER_LINE + 4, nbLines + 7, BLACK, WHITE, ' ');
+		pushRectMatrix(m, posY, posX, CAR_PER_LINE + 2, nbLines + 5, WHITE, BLACK, ' ');
 
 		for (i = 0; i < nbLines; ++i)
 		{
@@ -78,20 +79,20 @@ int dialogBox(int mode, matrix *m, char *text)
 				line[j] = text[j + i * CAR_PER_LINE];
 			}
 
-			pushTextMatrix(m, posY + i + 1, posX + 1, BLACK, WHITE, line);
+			pushTextMatrix(m, posY + i + 1, posX + 1, WHITE, BLACK, line);
 		}
 
 		for (i = 0; i < nbButtons; ++i)
 		{
 			if (buttonSelect == nbButtons - i - 1)
 			{
-				fg = WHITE;
-				bg = RED;
+				fg = BLACK;
+				bg = WHITE;
 			}
 			else
 			{
 				fg = WHITE;
-				bg = BLACK;
+				bg = RED;
 			}
 
 			pushRectMatrix(m, posY + nbLines + 1, posX + (CAR_PER_LINE + 2) - (BUTTON_WIDTH + 1) * i - BUTTON_WIDTH - 1, BUTTON_WIDTH, 3, fg, bg, ' ');
