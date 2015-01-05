@@ -257,6 +257,20 @@ int jouer(jeu *p, matrix *m)
                 ajouteValAlea(p);
                 saved = 0;
             }
+
+            if(finPartie(p))
+            {
+                affichageMatrice(p, m);
+                sleep(1);
+
+                if(gagne(p))
+                {
+                    dialogBox(0, m, "Vous avez gagne !");
+                } else { // Si la partie est finie et que c'est pas gagné, c'est que c'est perdu
+                    dialogBox(0, m, "Vous avez perdu.");
+                }
+                run = 0;
+            }
         }
     }
 
