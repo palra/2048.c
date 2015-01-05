@@ -27,17 +27,18 @@ int sauvegarde(jeu *j)
 		Le fichier est de la forme :
 
 		x
-		y:y:y:y:y:y:y:y:y:y:y:y:y:y:...y:
+		m
+		y:y:y:y:y:y:y:y:y:y:y:y:y:y:...
 
 		Avec :
 			x : largeur de la grille
+			m : la valeur maximale du jeu
 			y : la valeur des cases du tableau de la grille
-
-		Si la séquence est incomplète, alors elle sera complétée avec des 0
 
 	*/
 
 	fprintf(fSave, "%d\n", j->n);
+	fprintf(fSave, "%d\n", j->valMax);
 
 	for (i = 0; i < j->n*j->n; ++i)
 		fprintf(fSave, "%d:", *(j->grille + i));
@@ -46,6 +47,7 @@ int sauvegarde(jeu *j)
 
 	return 1;
 }
+
 /**
  * Charge une partie depuis le fichier de sauvegarde
  * Retourne -1 en cas d'erreur, 0 si aucune partie n'a été chargée,
@@ -62,10 +64,14 @@ int charger(jeu *j)
 
 	if (fSave == NULL)
 		return -1;
+
+	int dimension, valMax;
 	
-	char buffer[20];
-	*buffer = fgets(buffer, 20, fSave);
-	int dimension = atoi(buffer);
+	/* char buffer[20];						|| 			*/
+	/* *buffer = fgets(buffer, 20, fSave);	||=======> 	*/	fscanf(fSave, "%d\n", &dimension);
+	/* dimension = atoi(buffer);			|| 			*/
+
+	fscanf(fSave, "%d\n", &valMax);
 
   initialiseJeu(&j, dimension, 2048); // TODO : mettre la valeur de fin de jeu dans la sauvegarde
 
