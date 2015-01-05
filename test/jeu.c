@@ -1,4 +1,5 @@
 #include "test.h"
+#include "mouvement.h"
 #include "../src/jeu.h"
 
 void jeu_alloc_asserts()
@@ -12,6 +13,7 @@ void jeu_alloc_asserts()
         assertDiff("p.grille devrait etre different de NULL", (int)p.grille, NULL);
         assertEql("p.grille[0..n*n] devrait etre 0", p.grille[5], 0);
         assertEql("p.n devrait etre egal a 4", p.n, 4);
+        assertEql("p.score devrait etre egal a 0", p.score, 0);
         assertEql("p.nbCasesLibres devrait etre egal a n*n", p.nbCasesLibres, p.n * p.n);
         assertEql("p.valMax devrait etre egal a 2048", p.valMax, 2048);
         
@@ -22,6 +24,7 @@ void jeu_alloc_asserts()
     
         assertEql("p.grille devrait etre NULL", (int) p.grille, NULL);
         assertEql("p.n devrait etre egal a -1", p.n, -1);
+        assertEql("p.score devrait etre egal a 0", p.score, -1);
         assertEql("p.nbCasesLibres devrait etre egal a -1", p.nbCasesLibres, -1);
         assertEql("p.valMax devrait etre egal a -1", p.valMax, -1);
     
@@ -227,5 +230,7 @@ void test_jeu()
             jeu_perdu_asserts();
             jeu_fin_partie_asserts();
         endDescribe();
+        
+        test_mouvement();
     endDescribe();
 }

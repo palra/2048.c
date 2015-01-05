@@ -15,6 +15,7 @@ void initialiseJeu (jeu *p, int n, int valMax)
     p->valMax = valMax;
     p->nbCasesLibres = n * n;
     p->grille = calloc(n*n, sizeof(int));
+    p->score = 0;
     
     if(p->grille == NULL)
     {
@@ -32,7 +33,7 @@ void libereMemoire(jeu *p)
 {
     free(p->grille);
     p->grille = NULL;
-    p->n = p->nbCasesLibres = p->valMax = -1;
+    p->n = p->nbCasesLibres = p->valMax = p->score = -1;
 }
 
 /*! \fn indiceValide
@@ -200,6 +201,12 @@ int finPartie(jeu *p)
     return gagne(p) || perdu(p);
 }
 
+/**
+ * Jouer à une partie de 2048
+ * 
+ * \param p : pointeur sur la partie en cours
+ * \param p : pointeur sur la matrice d'affichage
+ */
 #define NB_BUTTONS_MENU_PAUSE 3
 
 int jouer(jeu *p, matrix *m)
@@ -246,7 +253,6 @@ int jouer(jeu *p, matrix *m)
             debutTerminalSansR(); // Sans ça un double finTerminalSansR se fait dans menu()
         } 
         else
-        {
             if(mouvement(p, mouvementChoisi))
             {
                 ajouteValAlea(p);

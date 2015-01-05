@@ -19,6 +19,7 @@ typedef struct {
     int valMax;
     int nbCasesLibres;
     int *grille;
+    int score;
 } jeu;
 
 void initialiseJeu (jeu *p, int n, int valMax);

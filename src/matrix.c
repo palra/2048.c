@@ -195,7 +195,7 @@ void clearMatrix(matrix *m)
 
 
 /**
- * Ajoute un texte dans la matrice
+ * Dessine un rectangle sur la matrice
  * 
  * \param m : Pointeur vers la matrice à modifier
  * \param ligne : Ligne de la 1ère case de la matrice où afficher le rectangle
@@ -232,4 +232,27 @@ int pushRectMatrix(matrix *m, int ligne, int colonne, int w, int h, COULEUR_TERM
     }
     
     return 0;
+}
+
+/**
+ * Ecrit un entier sur la matrice
+ * 
+ * \param m : Pointeur vers la matrice à modifier
+ * \param ligne : Ligne de la 1ère case de la matrice où afficher le rectangle
+ * \param colonne : Colonne de la 1ère case de la matrice où afficher le rectangle
+ * \param w : Largeur du rectangle
+ * \param h : Hauteur du rectangle
+ * \param fg : Couleur du rectangle
+ * \param bg : Couleur de l'arrière plan du rectangle
+ * \param s : Chaîne à affichier
+ * 
+ * Retourne 1 si la modification a réussie, -1 si l'entier a dépassé, 0 sinon.
+ */
+int pushIntMatrix(matrix *m, int ligne, int colonne, COULEUR_TERMINAL fg, COULEUR_TERMINAL bg, int e)
+{
+    char strScore[12] = "0";
+
+    sprintf(strScore, "%d", e);
+
+    return pushTextMatrix(m, ligne, colonne, fg, bg, strScore);
 }
