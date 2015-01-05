@@ -251,9 +251,7 @@ int jouer(jeu *p, matrix *m)
                 saved = 1;
             }
             debutTerminalSansR(); // Sans ça un double finTerminalSansR se fait dans menu()
-        } 
-        else
-        {
+        } else {
             if(mouvement(p, mouvementChoisi))
             {
                 ajouteValAlea(p);
