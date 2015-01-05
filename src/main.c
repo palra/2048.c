@@ -3,6 +3,8 @@
 #include "jeu.h"
 #include "mouvement.h"
 #include "menu.h"
+#include "save.h"
+#include "dialogBox.h"
 
 #include "../lib/saisieM.h"
 #include "../lib/color.h"
@@ -23,9 +25,9 @@ int main()
     // Liste des bouttons du menu
     menuButton button[NB_BUTTONS_MENU];
     button[0].choice = PLAY;
-    button[0].text = "Jouer";
+    button[0].text = "Nouvelle partie";
     button[1].choice = LOAD;
-    button[1].text = "Charger une partie";
+    button[1].text = "Continuer la partie";
     button[2].choice = EXIT;
     button[2].text = "Quitter";
 
@@ -35,10 +37,28 @@ int main()
     initialiseJeu(&j, DIM_JEU, FIN_JEU);
     initMatrix(&m, winW, winH - 1);
 
-    menuChoice choice = menu(&m, button, NB_BUTTONS_MENU);
+    menuChoice choice;
+    do
+    {
+        clearMatrix(&m);
+        choice = menu(&m, button, NB_BUTTONS_MENU);
 
-    if (choice == PLAY)
-        jouer(&j, &m);
+        switch(choice)
+        {
+            case PLAY:
+                initialiseJeu(&j, DIM_JEU, FIN_JEU);
+                ajouteValAlea(&j);
+                ajouteValAlea(&j);
+                jouer(&j, &m);
+                break;
+            case LOAD:
+                charger(&j);
+                jouer(&j, &m);
+                break;
+            default: break;
+        }
+
+    } while (choice != EXIT);
 
     freeMatrix(&m);
     libereMemoire(&j);

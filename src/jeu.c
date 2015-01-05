@@ -213,6 +213,8 @@ int jouer(jeu *p, matrix *m)
 {
     int run = 1, mouvementChoisi = 0;
     menuChoice choice;
+    int saved = 1;
+    int rep;
 
     menuButton button[NB_BUTTONS_MENU_PAUSE];
     button[0].choice = RESUME;
@@ -220,12 +222,9 @@ int jouer(jeu *p, matrix *m)
     button[1].choice = SAVE;
     button[1].text = "Sauvegarder";
     button[2].choice = EXIT;
-    button[2].text = "Quitter";
+    button[2].text = "Retour au menu";
 
     debutTerminalSansR();
-
-    ajouteValAlea(p);
-    ajouteValAlea(p);
 
     while (run)
     {
@@ -236,14 +235,29 @@ int jouer(jeu *p, matrix *m)
         {
             finTerminalSansR(); // Sans ça un double debutTerminalSansR se fait dans menu()
             choice = menu(m, button, NB_BUTTONS_MENU_PAUSE);
-            debutTerminalSansR(); // Sans ça un double finTerminalSansR se fait dans menu()
             if (choice == EXIT)
+            {
+                if (!saved)
+                {
+                    rep = dialogBox(2, m, "Votre partie n'est pas sauvegardee, voulez vous la sauvegarder avant de quitter ?");
+                    if (rep == 2)
+                        sauvegarde(p);
+                }
                 run = 0;
+            }
+            else if (choice == SAVE)
+            {
+                sauvegarde(p);
+                saved = 1;
+            }
+            debutTerminalSansR(); // Sans ça un double finTerminalSansR se fait dans menu()
         } 
-        else 
+        else
         {
-            if(mouvement(p, mouvementChoisi)) {
+            if(mouvement(p, mouvementChoisi))
+            {
                 ajouteValAlea(p);
+                saved = 0;
             }
         }
     }
