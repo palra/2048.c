@@ -43,10 +43,17 @@ int main()
         clearMatrix(&m);
         choice = menu(&m, button, NB_BUTTONS_MENU);
 
-        if (choice == PLAY)
+        switch(choice)
         {
-            initialiseJeu(&j, DIM_JEU, FIN_JEU);
-            jouer(&j, &m);
+            case PLAY:
+                initialiseJeu(&j, DIM_JEU, FIN_JEU);
+                jouer(&j, &m);
+                break;
+            case LOAD:
+                charger(&j);
+                jouer(&j, &m);
+                break;
+            default: break;
         }
 
     } while (choice != EXIT);
