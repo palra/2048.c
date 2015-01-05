@@ -206,7 +206,7 @@ int jouer(jeu *p, matrix *m)
 {
     int run = 1, mouvementChoisi = 0;
     menuChoice choice;
-    int saved = 0;
+    int saved = 1;
     int rep;
 
     menuButton button[NB_BUTTONS_MENU_PAUSE];
@@ -233,9 +233,12 @@ int jouer(jeu *p, matrix *m)
             choice = menu(m, button, NB_BUTTONS_MENU_PAUSE);
             if (choice == EXIT)
             {
-                rep = dialogBox(2, m, "Votre partie n'est pas sauvegardee, voulez vous la sauvegarder avant de quitter ?");
-                if (rep == 2)
-                    sauvegarde(p);
+                if (!saved)
+                {
+                    rep = dialogBox(2, m, "Votre partie n'est pas sauvegardee, voulez vous la sauvegarder avant de quitter ?");
+                    if (rep == 2)
+                        sauvegarde(p);
+                }
                 run = 0;
             }
             else if (choice == SAVE)

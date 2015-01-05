@@ -73,11 +73,11 @@ int charger(jeu *j)
 
 	fscanf(fSave, "%d\n", &valMax);
 
-  initialiseJeu(&j, dimension, 2048); // TODO : mettre la valeur de fin de jeu dans la sauvegarde
+	initialiseJeu(j, dimension, valMax); // TODO : mettre la valeur de fin de jeu dans la sauvegarde
 
-  char buf = 1;
+	char buf = 1;
 	for (i = 0; i < dimension * dimension; ++i)
 	{
-		fscanf("%d:", &(j->grille[i]));
+		fscanf(fSave, "%d:", &(j->grille[i]));
 	}
 }
