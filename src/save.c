@@ -34,6 +34,7 @@ int sauvegarde(jeu *j)
 		Avec :
 			x : largeur de la grille
 			m : la valeur maximale du jeu
+			s : le score du jeu
 			y : la valeur des cases du tableau de la grille
 
 	*/
@@ -67,7 +68,7 @@ int charger(jeu *j)
 	if (fSave == NULL)
 		return -1;
 
-	int dimension, valMax, score;
+	int dimension, valMax, score, nbCasesLibres;
 	
 	/* char buffer[20];						|| 			*/
 	/* *buffer = fgets(buffer, 20, fSave);	||=======> 	*/	fscanf(fSave, "%d\n", &dimension);
@@ -76,10 +77,14 @@ int charger(jeu *j)
 	fscanf(fSave, "%d\n", &valMax);
 	fscanf(fSave, "%d\n", &score);
 
-	initialiseJeu(j, dimension, valMax); // TODO : mettre la valeur de fin de jeu dans la sauvegarde
+	initialiseJeu(j, dimension, valMax);
+
   j->score = score;
 	for (i = 0; i < dimension * dimension; ++i)
 	{
 		fscanf(fSave, "%d:", &(j->grille[i]));
+
+		if(j->grille[i] != 0)
+			j->nbCasesLibres--;
 	}
 }
