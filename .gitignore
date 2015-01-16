@@ -27,3 +27,11 @@
 *.i*86
 *.x86_64
 *.hex
+
+/.c9/
+
+2048
+2048test
+todo.txt
+done.txt
+save.txt
