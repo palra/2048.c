@@ -234,9 +234,9 @@ int jouer(jeu *p, matrix *m)
 
             if(gagne(p))
             {
-                dialogBox(0, m, "Vous avez gagne !");
+                dialogBox(DIALOG_MODE_ALERT, m, "Vous avez gagne !");
             } else { // Si la partie est finie et que c'est pas gagné, c'est que c'est perdu
-                dialogBox(0, m, "Vous avez perdu.");
+                dialogBox(DIALOG_MODE_ALERT, m, "Vous avez perdu.");
             }
             run = 0;
         } else {
@@ -249,7 +249,7 @@ int jouer(jeu *p, matrix *m)
                 {
                     if (!saved)
                     {
-                        rep = dialogBox(2, m, "Votre partie n'est pas sauvegardee, voulez vous la sauvegarder avant de quitter ?");
+                        rep = dialogBox(DIALOG_MODE_YES_NO, m, "Votre partie n'est pas sauvegardee, voulez vous la sauvegarder avant de quitter ?");
                         if (rep == 2)
                             sauvegarde(p);
                     }
