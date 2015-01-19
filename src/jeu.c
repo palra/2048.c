@@ -232,12 +232,17 @@ int jouer(jeu *p, matrix *m)
         {
             sleep(1);
 
+            finTerminalSansR();
+
             if(gagne(p))
             {
                 dialogBox(DIALOG_MODE_ALERT, m, "Vous avez gagne !");
             } else { // Si la partie est finie et que c'est pas gagné, c'est que c'est perdu
                 dialogBox(DIALOG_MODE_ALERT, m, "Vous avez perdu.");
             }
+
+            debutTerminalSansR();
+            
             run = 0;
         } else {
             int mouvementChoisi = saisieD();
