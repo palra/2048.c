@@ -175,10 +175,8 @@ int perdu(jeu *p)
             for(j = p->n - 1; j >= 0; j--)
             {
                 if(
-                    (getVal(p, i, j) == getVal(p, i-1, j))
-                 || (getVal(p, i, j) == getVal(p, i+1, j))
+                    (getVal(p, i, j) == getVal(p, i+1, j))
                  || (getVal(p, i, j) == getVal(p, i, j+1))
-                 || (getVal(p, i, j) == getVal(p, i, j-1))
                 )
                     return 0;
             }
@@ -230,46 +228,45 @@ int jouer(jeu *p, matrix *m)
     {
         affichageMatrice(p, m);
 
-        int mouvementChoisi = saisieD();
-        if(mouvementChoisi == MVT_STOP)
+        if(finPartie(p))
         {
-            finTerminalSansR(); // Sans ça un double debutTerminalSansR se fait dans menu()
-            choice = menu(m, button, NB_BUTTONS_MENU_PAUSE);
-            if (choice == EXIT)
+            sleep(1);
+
+            if(gagne(p))
             {
-                if (!saved)
-                {
-                    rep = dialogBox(2, m, "Votre partie n'est pas sauvegardee, voulez vous la sauvegarder avant de quitter ?");
-                    if (rep == 2)
-                        sauvegarde(p);
-                }
-                run = 0;
+                dialogBox(DIALOG_MODE_ALERT, m, "Vous avez gagne !");
+            } else { // Si la partie est finie et que c'est pas gagné, c'est que c'est perdu
+                dialogBox(DIALOG_MODE_ALERT, m, "Vous avez perdu.");
             }
-            else if (choice == SAVE)
-            {
-                sauvegarde(p);
-                saved = 1;
-            }
-            debutTerminalSansR(); // Sans ça un double finTerminalSansR se fait dans menu()
+            run = 0;
         } else {
-            if(mouvement(p, mouvementChoisi))
+            int mouvementChoisi = saisieD();
+            if(mouvementChoisi == MVT_STOP)
             {
-                ajouteValAlea(p);
-                saved = 0;
-            }
-
-            if(finPartie(p))
-            {
-                affichageMatrice(p, m);
-                sleep(1);
-
-                if(gagne(p))
+                finTerminalSansR(); // Sans ça un double debutTerminalSansR se fait dans menu()
+                choice = menu(m, button, NB_BUTTONS_MENU_PAUSE);
+                if (choice == EXIT)
                 {
-                    dialogBox(0, m, "Vous avez gagne !");
-                } else { // Si la partie est finie et que c'est pas gagné, c'est que c'est perdu
-                    dialogBox(0, m, "Vous avez perdu.");
+                    if (!saved)
+                    {
+                        rep = dialogBox(DIALOG_MODE_YES_NO, m, "Votre partie n'est pas sauvegardee, voulez vous la sauvegarder avant de quitter ?");
+                        if (rep == 2)
+                            sauvegarde(p);
+                    }
+                    run = 0;
                 }
-                run = 0;
+                else if (choice == SAVE)
+                {
+                    sauvegarde(p);
+                    saved = 1;
+                }
+                debutTerminalSansR(); // Sans ça un double finTerminalSansR se fait dans menu()
+            } else {
+                if(mouvement(p, mouvementChoisi))
+                {
+                    ajouteValAlea(p);
+                    saved = 0;
+                }
             }
         }
     }
