@@ -1,59 +1,23 @@
 #include "mouvement.h"
 
-/*! mouvementLigne
- *  
- *  Effectue les mouvements (à gauche ou à droite) d'une ligne.
+/*! \fn stackLigne
+ *    
+ *  Tasse toute les cases (non-égales à 0) d'une ligne vers la droite ou la gauche
  *  Renvoi 1 si l'on a déplacé au moins une case, 0 si non.
  *  
  *  \param p : pointeur sur un jeu
  *  \param indice : indice de ligne
  *  \param direction : 1 pour la gauche et -1 pour la droite
- *  
+ *    
 */
-int mouvementLigne(jeu *j, int indice, int direction)
+int stackLigne(jeu *j, int indice, int direction)
 {
-    // Si l'indice n'est pas valide
-    if (indice >= j->n || indice < 0)
-        return 0;
-
-    int returnVal = 0;
     int i, pos;
+    int returnVal = 0;
 
     // Gauche
     if (direction == 1)
     {
-        // Tout deplacer vers la gauche
-        for (i = 1; i < j->n; ++i) // Pour chaque case
-        {
-            pos = i;
-            // On deplace tout ce qu'il y à sa droite vers la gauche
-            while (pos > 0 && getVal(j, indice, pos - 1) == 0 && getVal(j, indice, pos) != 0)
-            {
-                setVal(j, indice, pos - 1, getVal(j, indice, pos));
-                setVal(j, indice, pos, 0);
-                --pos;
-
-                returnVal = 1;
-            }
-        }
-
-        // Sommer les cases qui comportent la même valeur
-        for (i = 0; i < j->n - 1; ++i) // Pour chaque cases sauf la derniere
-        {
-            pos = i;
-            // Si la case à droite a la même valeur
-            if (getVal(j, indice, pos + 1) == getVal(j, indice, pos) && getVal(j, indice, pos) != 0)
-            {
-                // Multiplier la case par 2
-                setVal(j, indice, pos, getVal(j, indice, pos) * 2);
-                // Mettre à 0 la case à sa droite
-                setVal(j, indice, pos + 1, 0);
-
-                returnVal = 1;
-                j->score += getVal(j, indice, pos);
-            }
-        }
-
         // Tout deplacer vers la gauche
         for (i = 1; i < j->n; ++i) // Pour chaque case
         {
@@ -87,41 +51,136 @@ int mouvementLigne(jeu *j, int indice, int direction)
                 returnVal = 1;
             }
         }
+    }
+}
 
-        // Sommer les cases qui comportent la même valeur
-        for (i = j->n - 1; i > 0; --i) // Pour chaque cases sauf la premiere
+/*! mouvementLigne
+ *  
+ *  Effectue les mouvements (à gauche ou à droite) d'une ligne.
+ *  Renvoi 1 si l'on a déplacé au moins une case, 0 si non.
+ *  
+ *  \param p : pointeur sur un jeu
+ *  \param indice : indice de ligne
+ *  \param direction : 1 pour la gauche et -1 pour la droite
+ *  
+*/
+int mouvementLigne(jeu *j, int indice, int direction)
+{
+    // Si l'indice n'est pas valide
+    if (indice >= j->n || indice < 0)
+        return 0;
+
+    int returnVal = 0;
+    int i, pos;
+
+    /* Tasser */
+
+        returnVal = returnVal || stackLigne(j, indice, direction);
+
+    /* Additionner */
+
+        // Gauche
+        if (direction == 1)
         {
-            pos = i;
-            // Si la case à gauche a la même valeur
-            if (getVal(j, indice, pos - 1) == getVal(j, indice, pos) && getVal(j, indice, pos) != 0)
-            {
-                // Multiplier la case par 2
-                setVal(j, indice, pos, getVal(j, indice, pos) * 2);
-                // Mettre à 0 la case à sa gauche
-                setVal(j, indice, pos - 1, 0);
 
-                returnVal = 1;
-                j->score += getVal(j, indice, pos);
+            // Sommer les cases qui comportent la même valeur
+            for (i = 0; i < j->n - 1; ++i) // Pour chaque cases sauf la derniere
+            {
+                pos = i;
+                // Si la case à droite a la même valeur
+                if (getVal(j, indice, pos + 1) == getVal(j, indice, pos) && getVal(j, indice, pos) != 0)
+                {
+                    // Multiplier la case par 2
+                    setVal(j, indice, pos, getVal(j, indice, pos) * 2);
+                    // Mettre à 0 la case à sa droite
+                    setVal(j, indice, pos + 1, 0);
+
+                    returnVal = 1;
+                    j->score += getVal(j, indice, pos);
+                }
             }
         }
 
-        // Tout deplacer vers la droite
-        for (i = j->n - 2; i >= 0; --i) // Pour chaque case
+        // Droite
+        else if (direction == -1)
+        {
+            // Sommer les cases qui comportent la même valeur
+            for (i = j->n - 1; i > 0; --i) // Pour chaque cases sauf la premiere
+            {
+                pos = i;
+                // Si la case à gauche a la même valeur
+                if (getVal(j, indice, pos - 1) == getVal(j, indice, pos) && getVal(j, indice, pos) != 0)
+                {
+                    // Multiplier la case par 2
+                    setVal(j, indice, pos, getVal(j, indice, pos) * 2);
+                    // Mettre à 0 la case à sa gauche
+                    setVal(j, indice, pos - 1, 0);
+
+                    returnVal = 1;
+                    j->score += getVal(j, indice, pos);
+                }
+            }
+        }
+
+    /* Tasser */
+
+        returnVal = returnVal || stackLigne(j, indice, direction);
+
+    return returnVal;
+}
+
+/*! \fn stackColonne
+ *    
+ *  Tasse toute les cases (non-égales à 0) d'une colonne vers la droite ou la gauche
+ *  Renvoi 1 si l'on a déplacé au moins une case, 0 si non.
+ *  
+ *  \param p : pointeur sur un jeu
+ *  \param indice : indice de colonne
+ *  \param direction : 1 pour le haut et -1 pour le bas
+ *    
+*/
+int stackColonne(jeu *j, int indice, int direction)
+{
+    int i, pos;
+    int returnVal = 0;
+
+    // Haut
+    if (direction == 1)
+    {
+        // Tout deplacer vers le haut
+        for (i = 1; i < j->n; ++i) // Pour chaque case
         {
             pos = i;
-            // On deplace tout ce qu'il y à sa gauche vers la droite
-            while (pos < j->n - 1 && getVal(j, indice, pos + 1) == 0 && getVal(j, indice, pos) != 0)
+            // On deplace tout ce qu'il y a en dessous vers le haut
+            while (pos > 0 && getVal(j, pos - 1, indice) == 0 && getVal(j, pos, indice) != 0)
             {
-                setVal(j, indice, pos + 1, getVal(j, indice, pos));
-                setVal(j, indice, pos, 0);
-                ++pos;
+                setVal(j, pos - 1, indice, getVal(j, pos, indice));
+                setVal(j, pos, indice, 0);
+                --pos;
 
                 returnVal = 1;
             }
         }
     }
 
-    return returnVal;
+    // Bas
+    else if (direction == -1)
+    {
+        // Tout deplacer vers le bas
+        for (i = j->n - 2; i >= 0; --i) // Pour chaque case
+        {
+            pos = i;
+            // On deplace tout ce qu'il y au dessu vers le bas
+            while (pos < j->n - 1 && getVal(j, pos + 1, indice) == 0 && getVal(j, pos, indice) != 0)
+            {
+                setVal(j, pos + 1, indice, getVal(j, pos, indice));
+                setVal(j, pos, indice, 0);
+                ++pos;
+
+                returnVal = 1;
+            }
+        }
+    }
 }
 
 /*! mouvementColonne
@@ -143,107 +202,57 @@ int mouvementColonne(jeu *j, int indice, int direction)
     int returnVal = 0;
     int i, pos;
 
-    // Gauche
-    if (direction == 1)
-    {
-        // Tout deplacer vers la gauche
-        for (i = 1; i < j->n; ++i) // Pour chaque case
-        {
-            pos = i;
-            // On deplace tout ce qu'il y à sa droite vers la gauche
-            while (pos > 0 && getVal(j, pos - 1, indice) == 0 && getVal(j, pos, indice) != 0)
-            {
-                setVal(j, pos - 1, indice, getVal(j, pos, indice));
-                setVal(j, pos, indice, 0);
-                --pos;
+    /* Tasser */
 
-                returnVal = 1;
+        returnVal = returnVal || stackColonne(j, indice, direction);
+
+    /* Additionner */
+
+        // Haut
+        if (direction == 1)
+        {
+            // Sommer les cases qui comportent la même valeur
+            for (i = 0; i < j->n - 1; ++i) // Pour chaque cases sauf la derniere
+            {
+                pos = i;
+                // Si la case en dessous a la même valeur
+                if (getVal(j, pos + 1, indice) == getVal(j, pos, indice) && getVal(j, pos, indice) != 0)
+                {
+                    // Multiplier la case par 2
+                    setVal(j, pos, indice, getVal(j, pos, indice) * 2);
+                    // Mettre à 0 la case en dessous
+                    setVal(j, pos + 1, indice, 0);
+
+                    returnVal = 1;
+                    j->score += getVal(j, pos, indice);
+                }
             }
         }
 
-        // Sommer les cases qui comportent la même valeur
-        for (i = 0; i < j->n - 1; ++i) // Pour chaque cases sauf la derniere
+        // Bas
+        else if (direction == -1)
         {
-            pos = i;
-            // Si la case à droite a la même valeur
-            if (getVal(j, pos + 1, indice) == getVal(j, pos, indice) && getVal(j, pos, indice) != 0)
+            // Sommer les cases qui comportent la même valeur
+            for (i = j->n - 1; i > 0; --i) // Pour chaque cases sauf la premiere
             {
-                // Multiplier la case par 2
-                setVal(j, pos, indice, getVal(j, pos, indice) * 2);
-                // Mettre à 0 la case à sa droite
-                setVal(j, pos + 1, indice, 0);
+                pos = i;
+                // Si la case au dessu a la même valeur
+                if (getVal(j, pos - 1, indice) == getVal(j, pos, indice) && getVal(j, pos, indice) != 0)
+                {
+                    // Multiplier la case par 2
+                    setVal(j, pos, indice, getVal(j, pos, indice) * 2);
+                    // Mettre à 0 la case au dessu
+                    setVal(j, pos - 1, indice, 0);
 
-                returnVal = 1;
-                j->score += getVal(j, pos, indice);
+                    returnVal = 1;
+                    j->score += getVal(j, pos, indice);
+                }
             }
         }
 
-        // Tout deplacer vers la gauche
-        for (i = 1; i < j->n; ++i) // Pour chaque case
-        {
-            pos = i;
-            // On deplace tout ce qu'il y à sa droite vers la gauche
-            while (pos > 0 && getVal(j, pos - 1, indice) == 0 && getVal(j, pos, indice) != 0)
-            {
-                setVal(j, pos - 1, indice, getVal(j, pos, indice));
-                setVal(j, pos, indice, 0);
-                --pos;
+    /* Tasser */
 
-                returnVal = 1;
-            }
-        }
-    }
-
-    // Droite
-    else if (direction == -1)
-    {
-        // Tout deplacer vers la droite
-        for (i = j->n - 2; i >= 0; --i) // Pour chaque case
-        {
-            pos = i;
-            // On deplace tout ce qu'il y à sa gauche vers la droite
-            while (pos < j->n - 1 && getVal(j, pos + 1, indice) == 0 && getVal(j, pos, indice) != 0)
-            {
-                setVal(j, pos + 1, indice, getVal(j, pos, indice));
-                setVal(j, pos, indice, 0);
-                ++pos;
-
-                returnVal = 1;
-            }
-        }
-
-        // Sommer les cases qui comportent la même valeur
-        for (i = j->n - 1; i > 0; --i) // Pour chaque cases sauf la premiere
-        {
-            pos = i;
-            // Si la case à gauche a la même valeur
-            if (getVal(j, pos - 1, indice) == getVal(j, pos, indice) && getVal(j, pos, indice) != 0)
-            {
-                // Multiplier la case par 2
-                setVal(j, pos, indice, getVal(j, pos, indice) * 2);
-                // Mettre à 0 la case à sa gauche
-                setVal(j, pos - 1, indice, 0);
-
-                returnVal = 1;
-                j->score += getVal(j, pos, indice);
-            }
-        }
-
-        // Tout deplacer vers la droite
-        for (i = j->n - 2; i >= 0; --i) // Pour chaque case
-        {
-            pos = i;
-            // On deplace tout ce qu'il y à sa gauche vers la droite
-            while (pos < j->n - 1 && getVal(j, pos + 1, indice) == 0 && getVal(j, pos, indice) != 0)
-            {
-                setVal(j, pos + 1, indice, getVal(j, pos, indice));
-                setVal(j, pos, indice, 0);
-                ++pos;
-
-                returnVal = 1;
-            }
-        }
-    }
+        returnVal = returnVal || stackColonne(j, indice, direction);
 
     return returnVal;
 }
