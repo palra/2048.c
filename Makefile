@@ -8,13 +8,13 @@ TEST := $(SRC) $(wildcard test/*.c)
 TEST := $(filter-out src/main.c, $(TEST))
 OBJ= $(SRC:.c=.o)
 
+all: $(EXEC)
+
 run: mrproper all
 	@./$(EXEC)
 
 test: mrproper $(TEXEC)
 	@./$(TEXEC) | less -R
-
-all: $(EXEC)
 
 $(TEXEC): $(TEST)
 	@$(CC) -o $@ $^ $(LDFLAGS)
