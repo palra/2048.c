@@ -19,9 +19,10 @@ test: mrproper $(TEXEC)
 $(TEXEC): $(TEST)
 	@$(CC) -o $@ $^ $(LDFLAGS)
 
-2048: $(SRC)
+$(EXEC): $(SRC)
 	@$(CC) -o $@ $^ $(LDFLAGS)
-	
+
+# Déclaration des dépendances .c -> .h
 main.o: jeu.h
 
 %.o: %.c
